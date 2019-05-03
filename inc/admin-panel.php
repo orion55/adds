@@ -12,11 +12,12 @@ function crb_attach_theme_options()
     Container::make('theme_options', __('Опции плагина сбора адресов', 'crb'))
         ->set_icon('dashicons-external')
         ->set_page_menu_title('Сбор адресов')
-        ->set_page_menu_position(7)
+        ->set_page_parent('options-general.php')
         ->add_fields(array(
             Field::make('html', 'crb_information_text')
                 ->set_html("<div><b>[address-module]</b> - шорткод для сбора адресов</div>"),
             Field::make('text', 'crb_email', 'Email')
                 ->set_help_text('Email для отправки заказа')
         ));
+
 }
