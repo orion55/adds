@@ -1,4 +1,4 @@
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import FooterAddress from '../FooterAddress'
 import store from '../../store'
 
@@ -11,7 +11,7 @@ export default {
   mounted () {
     this.$store.dispatch('loadData')
   },
-  computed: mapState(['adds', 'loading']),
+  computed: mapState(['adds']),
   methods: {
     ...mapMutations(['changeCheck']),
     getSides (sides) {
@@ -22,6 +22,6 @@ export default {
         }
       })
       return str
-    }
-  }
+    },
+  },
 }

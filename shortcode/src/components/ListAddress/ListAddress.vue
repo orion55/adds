@@ -3,10 +3,7 @@
 
 <template>
     <div class="list-adds">
-        <div v-if="loading" class="preloader">
-            <div class="page-loader-circle"></div>
-        </div>
-        <div v-else class="list-adds__box">
+        <div class="list-adds__box">
             <div class="list-adds__title">Адресная программа</div>
             <div class="list-adds__wrap">
                 <div class="list-adds__header">
@@ -16,7 +13,8 @@
                     <div class="list-adds__col list-adds__col--4">Сторона</div>
                 </div>
                 <div class="list-adds__body">
-                    <div class="list-adds__item" v-for="item in adds" :key="item.id" @click="changeCheck(item.id)">
+                    <div class="list-adds__item" v-for="item in adds" :key="item.id"
+                         @click="changeCheck(item.id)">
                         <div class="list-adds__column list-adds__col--1">
                             <div :class="[item.check ? 'list-adds--circle-solid': 'list-adds--circle' , 'list-adds--center']">
                             </div>

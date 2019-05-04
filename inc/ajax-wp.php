@@ -13,16 +13,6 @@ function get_billboards()
         return $i;
     }
 
-    /* if (empty($_POST['nonce'])) {
-         wp_die('Nonce bad');
-     }
-
-     $check_ajax_referer = check_ajax_referer('myajax-nonce123', 'nonce', false);
-
-     if (!$check_ajax_referer) {
-         wp_send_json_error('Эх! Сработала защита');
-     }*/
-
     $result = [];
     $args = array(
         'posts_per_page' => '-1',

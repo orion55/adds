@@ -1,16 +1,19 @@
 <template>
-    <div id="app">
-        <ListAddress></ListAddress>
+    <div id="app-container">
+        <MapBox></MapBox>
+        <ListBox></ListBox>
     </div>
 </template>
 
 <script>
-  import ListAddress from './components/ListAddress/ListAddress.vue'
+  import MapBox from './components/MapBox'
+  import ListBox from './components/ListBox'
 
   export default {
     name: 'app',
     components: {
-      ListAddress,
+      MapBox,
+      ListBox,
     },
   }
 </script>
@@ -18,11 +21,13 @@
 <style lang="scss">
     @import "./assets/fonts/montserrat.css";
 
-    #app {
-        width: 800px;
-        margin: 15px auto;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-        height: 850px;
+    #app-container {
+        width: 100%;
+        height: 800px;
         font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
 </style>

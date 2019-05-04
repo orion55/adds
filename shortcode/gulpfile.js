@@ -38,5 +38,5 @@ gulp.task('vue-build-task', function () {
 })
 
 gulp.task('watch', function () {
-  gulp.watch('./src/*.vue', ['vue-build-task'])
+  gulp.watch(['./src/*.*', './src/components/*.*', './src/components/ListAddress/*.*'], ['vue-build-task'])
 })
