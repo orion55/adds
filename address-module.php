@@ -15,3 +15,4 @@ defined('ABSPATH') or die('Nope, not accessing this');
 require plugin_dir_path(__FILE__) . 'inc/admin-panel.php';
 require plugin_dir_path(__FILE__) . 'inc/post-type.php';
 require plugin_dir_path(__FILE__) . 'inc/post-fields.php';
+require plugin_dir_path(__FILE__) . 'inc/ajax-wp.php';
