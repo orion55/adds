@@ -6,7 +6,7 @@ class Address_Shortcode
 
     static function init()
     {
-        add_shortcode('address-module', array(__CLASS__, 'floor_func'));
+        add_shortcode('address-module', array(__CLASS__, 'address_func'));
         add_action('init', array(__CLASS__, 'register_script'));
         add_action('wp_footer', array(__CLASS__, 'js_variables'));
         add_action('wp_footer', array(__CLASS__, 'print_script'));
@@ -15,19 +15,17 @@ class Address_Shortcode
     static function address_func($atts)
     {
         self::$add_script = true;
-//        $html = "<div id=\"address-module\"><AddressModule></AddressModule></div>";
-        $html = "<div id=\"address-module\"><h1>Hi!!!</h1></div>";
+        $html = "<div id=\"address-module\"><demo></demo></div>";
         return $html;
     }
 
     static function register_script()
     {
         $url = plugin_dir_url(__FILE__);
-        /*wp_register_style('floor', plugin_dir_url(__FILE__) . 'css/floorlib-misc.css', array(), time(), 'all');
-        wp_register_style('floorlibs', plugin_dir_url(__FILE__) . 'dist/floorlib.css', array('floor'), time(), 'all');
-        wp_register_script('vue', plugin_dir_url(__FILE__) . 'js/vue.min.js', array(), null, true);
-        wp_register_script('floorlib', plugin_dir_url(__FILE__) . 'dist/floorlib.umd.min.js', array('vue'), time(), true);
-        wp_register_script('main', plugin_dir_url(__FILE__) . 'js/main.js', array('floorlib'), null, true);*/
+        wp_register_style('adds-module', plugin_dir_url(__FILE__) . 'dist/adds.css', null, time(), 'all');
+        wp_register_script('vue', plugin_dir_url(__FILE__) . 'js/vue.js', array(), null, true);
+        wp_register_script('adds-module-lib', plugin_dir_url(__FILE__) . 'dist/adds.umd.min.js', array('vue'), time(), true);
+        wp_register_script('main', plugin_dir_url(__FILE__) . 'js/main.js', array('adds-module-lib'), time(), true);
     }
 
     static function print_script()
@@ -35,10 +33,10 @@ class Address_Shortcode
         if (!self::$add_script) {
             return;
         }
-        /* wp_enqueue_style('floorlibs');
-         wp_print_scripts('vue');
-         wp_print_scripts('floorlib');
-         wp_print_scripts('main');*/
+        wp_enqueue_style('adds-module');
+        wp_print_scripts('vue');
+        wp_print_scripts('adds-module-lib');
+        wp_print_scripts('main');
     }
 
     static function js_variables()

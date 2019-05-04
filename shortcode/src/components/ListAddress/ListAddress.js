@@ -1,8 +1,10 @@
 import { mapState, mapMutations } from 'vuex'
 import FooterAddress from '../FooterAddress'
+import store from '../../store'
 
 export default {
   name: 'ListAddress',
+  store,
   components: {
     FooterAddress,
   },

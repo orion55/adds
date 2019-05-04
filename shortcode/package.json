@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name adds-module"
+    "build-lib": "vue-cli-service build --target lib --name adds"
   },
   "dependencies": {
     "vue": "^2.6.10",
@@ -15,9 +15,13 @@
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "axios": "^0.18.0",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.7.0",
     "lodash": "^4.17.11",
+    "run-sequence": "^2.2.1",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
+    "vinyl-ftp": "^0.6.1",
     "vue-template-compiler": "^2.5.21"
   }
 }
