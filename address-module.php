@@ -16,3 +16,7 @@ require plugin_dir_path(__FILE__) . 'inc/admin-panel.php';
 require plugin_dir_path(__FILE__) . 'inc/post-type.php';
 require plugin_dir_path(__FILE__) . 'inc/post-fields.php';
 require plugin_dir_path(__FILE__) . 'inc/ajax-wp.php';
+require plugin_dir_path(__FILE__) . 'shortcode/address-shortcode.php';
+
+$shortcode = new Address_Shortcode();
+$shortcode->init();

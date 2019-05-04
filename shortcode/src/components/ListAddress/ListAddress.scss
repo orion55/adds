@@ -1,0 +1,150 @@
+@import "../../assets/css/preloader.css";
+
+.list-adds {
+  height: 100%;
+  /*padding-right: 4px;*/
+}
+
+.list-adds__title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-bottom: 20px;
+}
+
+.list-adds__body {
+  overflow: auto;
+  margin: 10px 4px 10px 0;
+  flex: 1;
+}
+
+.list-adds__box {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 4px;
+  background-color: #DFE4E6;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 4px;
+  background-color: #DFE4E6;
+}
+
+.list-adds__col {
+  font-weight: 600;
+  font-size: 11px;
+  /*line-height: 13px;*/
+  color: #868F98;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.list-adds__column {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #000000;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.list-adds__header {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(217, 220, 227, 0.5);
+  padding: 10px 4px 10px 0;
+}
+
+.list-adds__item {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-bottom: #EEF1F2 1px solid;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #F6F8F9;
+  }
+}
+
+.list-adds__wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  min-height: 90%;
+  height: calc(91% + 2px);
+}
+
+.list-adds__col--1 {
+  width: 30px;
+}
+
+.list-adds__col--2 {
+  width: 70px;
+}
+
+.list-adds__col--3 {
+  flex: 1;
+}
+
+.list-adds__col--4 {
+  width: 70px;
+}
+
+.list-adds--circle {
+  width: 10px;
+  height: 10px;
+  background: url("../../assets/svg/circle-regular.svg") center no-repeat;
+}
+
+.list-adds--circle-solid {
+  width: 10px;
+  height: 10px;
+  background: url("../../assets/svg/circle-solid.svg") center no-repeat;
+}
+
+.list-adds__col--text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.list-adds__col--space {
+  padding-right: 5px;
+}
+
+.list-adds--desc {
+  font-weight: 600;
+  font-size: 9px;
+  color: #868F98;
+}
+
+.list-adds--headline {
+  padding-bottom: 3px;
+}
+
+.list-adds--center {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.list-addr--check {
+  color: #245EF6;
+}
