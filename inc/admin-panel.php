@@ -17,7 +17,9 @@ function crb_attach_theme_options()
             Field::make('html', 'crb_information_text')
                 ->set_html("<div><b>[address-module]</b> - шорткод для сбора адресов</div>"),
             Field::make('text', 'crb_email', 'Email')
-                ->set_help_text('Email для отправки заказа')
+                ->set_help_text('Email для отправки заказа'),
+            Field::make('text', 'crb_apikey', 'Ключ API Яндекс.Карт')
+                ->set_help_text('Ключ API для доступа к Яндекс.Картам')
         ));
 
 }
