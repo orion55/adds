@@ -1,16 +1,20 @@
 <template>
-    <yandex-map zoom="10" id="map-box" :options="options"
-                :coords="[54.62896654088406, 39.731893822753904]"
-                @map-was-initialized="initHandler"
+    <yandex-map zoom="14" id="map-box" :options="options"
+                :coords="coords"
+                @map-was-initialized="initHandler" :placemarks="placemarks" :scrollZoom="scrollZoom"
     >
     </yandex-map>
+
 </template>
 
 <script>
   import { yandexMap, ymapMarker } from 'vue-yandex-maps'
+  import store from '../store'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'MapBox',
+    store,
     components: {
       yandexMap,
       ymapMarker,
@@ -22,6 +26,7 @@
           lang: 'ru_RU',
           version: '2.1',
         },
+        scrollZoom: false,
       }
     },
     methods: {
@@ -29,6 +34,7 @@
         console.log('init')
       },
     },
+    computed: mapState(['coords', 'placemarks']),
   }
 </script>
 

@@ -8,12 +8,17 @@
 <script>
   import MapBox from './components/MapBox'
   import ListBox from './components/ListBox'
+  import store from './store'
 
   export default {
     name: 'app',
+    store,
     components: {
       MapBox,
       ListBox,
+    },
+    mounted () {
+      this.$store.dispatch('loadData')
     },
   }
 </script>

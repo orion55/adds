@@ -13,7 +13,7 @@
                     <div class="list-adds__col list-adds__col--4">Сторона</div>
                 </div>
                 <div class="list-adds__body">
-                    <div class="list-adds__item" v-for="item in adds" :key="item.id"
+                    <div class="list-adds__item" v-for="item in filters" :key="item.id"
                          @click="changeCheck(item.id)">
                         <div class="list-adds__column list-adds__col--1">
                             <div :class="[item.check ? 'list-adds--circle-solid': 'list-adds--circle' , 'list-adds--center']">
