@@ -18543,17 +18543,6 @@ module.exports = function (Constructor, NAME, next) {
 
 /***/ }),
 
-/***/ "4240":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_75084006_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("93e9");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_75084006_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_75084006_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_75084006_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "454f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19558,13 +19547,6 @@ module.exports = __webpack_require__("35e8");
 
 /***/ }),
 
-/***/ "93e9":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "9aa9":
 /***/ (function(module, exports) {
 
@@ -20049,6 +20031,13 @@ module.exports = function (it) {
   return it;
 };
 
+
+/***/ }),
+
+/***/ "be54":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -20811,6 +20800,17 @@ module.exports = function (done, value) {
 
 /***/ }),
 
+/***/ "d65b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_07d10a6c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("be54");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_07d10a6c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_07d10a6c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBox_vue_vue_type_style_index_0_id_07d10a6c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "d864":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21457,19 +21457,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc5572-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=0b4986f7&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app-container"}},[_c('MapBox'),_c('ListBox')],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc5572-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=6a688754&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app-container"}},[(_vm.loading)?_c('div',{staticClass:"preloader"},[_c('div',{staticClass:"page-loader-circle"}),_c('div',{staticClass:"page-loader-text"},[_vm._v("Пожалуйста, подождите...")])]):_vm._e(),_c('MapBox'),_c('ListBox')],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=0b4986f7&
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc5572-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MapBox.vue?vue&type=template&id=75084006&scoped=true&
-var MapBoxvue_type_template_id_75084006_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('yandex-map',{attrs:{"zoom":"14","id":"map-box","options":_vm.options,"coords":_vm.coords,"scrollZoom":_vm.scrollZoom,"placemarks":_vm.placemarks},on:{"map-was-initialized":_vm.initHandler,"map-initialization-started":_vm.beforeHandler}})}
-var MapBoxvue_type_template_id_75084006_scoped_true_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/MapBox.vue?vue&type=template&id=75084006&scoped=true&
+// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=6a688754&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js
 var get_own_property_descriptor = __webpack_require__("268f");
@@ -21527,6 +21520,13 @@ function _objectSpread(target) {
 
   return target;
 }
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc5572-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MapBox.vue?vue&type=template&id=07d10a6c&scoped=true&
+var MapBoxvue_type_template_id_07d10a6c_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('yandex-map',{attrs:{"zoom":"14","id":"map-box","options":_vm.options,"coords":_vm.coords,"scrollZoom":_vm.scrollZoom,"placemarks":_vm.placemarks},on:{"map-was-initialized":_vm.initHandler}})}
+var MapBoxvue_type_template_id_07d10a6c_scoped_true_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/MapBox.vue?vue&type=template&id=07d10a6c&scoped=true&
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
 
@@ -22503,8 +22503,7 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm, axios_defau
     adds: [],
     loading: true,
     visibility: 'all',
-    coords: [] // placemarks: [],
-
+    coords: []
   },
   getters: {
     filters: function filters(state) {
@@ -22538,25 +22537,6 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm, axios_defau
       var coord = state.adds[0].coordinates;
       state.coords = [coord.lat, coord.lng];
     },
-
-    /*initPlacemarks (state) {
-      state.adds.forEach((item) => {
-          const coord = item.coordinates
-          state.placemarks.push({
-            coords: [coord.lat, coord.lng],
-            properties: {},
-            options: {
-              iconLayout: 'default#image',
-              iconImageHref: wp_data.plugin_dir_url + 'img/circle.svg',
-              iconImageSize: [40, 40],
-              iconImageOffset: [0, 0],
-            },
-            // callbacks: {click: (event) => {console.log(event)}},
-          })
-        },
-      )
-      console.log(state.placemarks)
-    },*/
     changeLoadingState: function changeLoadingState(state, loading) {
       state.loading = loading;
     },
@@ -22574,9 +22554,6 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm, axios_defau
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MapBox.vue?vue&type=script&lang=js&
 
 
-
-var _this = undefined;
-
 //
 //
 //
@@ -22584,7 +22561,7 @@ var _this = undefined;
 //
 //
 //
-
+//
 
 
 
@@ -22606,8 +22583,8 @@ var _this = undefined;
       placemarks: []
     };
   },
-  methods: {
-    beforeHandler: function beforeHandler() {
+  methods: _objectSpread({}, mapMutations(['changeLoadingState']), {
+    initHandler: function initHandler() {
       var arr = [];
       store.state.adds.forEach(function (item) {
         var coord = item.coordinates;
@@ -22627,42 +22604,16 @@ var _this = undefined;
           }
         });
       });
-      console.log(arr); // console.log(this.placemarks)
-    },
-    initHandler: function initHandler() {
-      console.log('init'); // console.log(this.placemarks)
-    },
-    initPlacemarks: function initPlacemarks() {
-      var arr1 = [];
-
-      _this.adds.forEach(function (item) {
-        var coord = item.coordinates;
-        arr1.push({
-          coords: [coord.lat, coord.lng],
-          properties: {},
-          options: {
-            iconLayout: 'default#image',
-            iconImageHref: wp_data.plugin_dir_url + 'img/' + item.iconImage,
-            iconImageSize: [40, 40],
-            iconImageOffset: [0, 0]
-          },
-          callbacks: {
-            click: function click(event) {
-              console.log(event);
-            }
-          }
-        });
-      });
-
-      return arr1;
+      this.placemarks = arr;
+      this.changeLoadingState(false);
     }
-  },
+  }),
   computed: _objectSpread({}, mapState(['coords', 'adds']))
 });
 // CONCATENATED MODULE: ./src/components/MapBox.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_MapBoxvue_type_script_lang_js_ = (MapBoxvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/MapBox.vue?vue&type=style&index=0&id=75084006&scoped=true&lang=css&
-var MapBoxvue_type_style_index_0_id_75084006_scoped_true_lang_css_ = __webpack_require__("4240");
+// EXTERNAL MODULE: ./src/components/MapBox.vue?vue&type=style&index=0&id=07d10a6c&scoped=true&lang=css&
+var MapBoxvue_type_style_index_0_id_07d10a6c_scoped_true_lang_css_ = __webpack_require__("d65b");
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -22770,11 +22721,11 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   components_MapBoxvue_type_script_lang_js_,
-  MapBoxvue_type_template_id_75084006_scoped_true_render,
-  MapBoxvue_type_template_id_75084006_scoped_true_staticRenderFns,
+  MapBoxvue_type_template_id_07d10a6c_scoped_true_render,
+  MapBoxvue_type_template_id_07d10a6c_scoped_true_staticRenderFns,
   false,
   null,
-  "75084006",
+  "07d10a6c",
   null
   
 )
@@ -22934,6 +22885,7 @@ var ListBox_component = normalizeComponent(
 
 /* harmony default export */ var ListBox = (ListBox_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=script&lang=js&
+
 //
 //
 //
@@ -22941,6 +22893,11 @@ var ListBox_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -22953,7 +22910,8 @@ var ListBox_component = normalizeComponent(
   },
   mounted: function mounted() {
     this.$store.dispatch('loadData');
-  }
+  },
+  computed: _objectSpread({}, mapState(['loading']))
 });
 // CONCATENATED MODULE: ./src/App.vue?vue&type=script&lang=js&
  /* harmony default export */ var src_Appvue_type_script_lang_js_ = (Appvue_type_script_lang_js_); 

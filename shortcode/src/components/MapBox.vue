@@ -1,6 +1,7 @@
 <template>
-    <yandex-map zoom="14" id="map-box" :options="options" :coords="coords" @map-was-initialized="initHandler"
-                :scrollZoom="scrollZoom" :placemarks="placemarks" @map-initialization-started="beforeHandler"
+    <yandex-map zoom="14" id="map-box" :options="options" :coords="coords"
+                @map-was-initialized="initHandler"
+                :scrollZoom="scrollZoom" :placemarks="placemarks"
     >
     </yandex-map>
 </template>
@@ -8,8 +9,7 @@
 <script>
   import { yandexMap, ymapMarker } from 'vue-yandex-maps'
   import store from '../store'
-  import { mapState } from 'vuex'
-  import _ from 'lodash'
+  import { mapMutations, mapState } from 'vuex'
 
   export default {
     name: 'MapBox',
@@ -26,11 +26,12 @@
           version: '2.1',
         },
         scrollZoom: false,
-        placemarks: []
+        placemarks: [],
       }
     },
     methods: {
-      beforeHandler: () => {
+      ...mapMutations(['changeLoadingState']),
+      initHandler: function () {
         let arr = []
         store.state.adds.forEach((item) => {
             const coord = item.coordinates
@@ -47,36 +48,13 @@
             })
           },
         )
-        console.log(arr)
-        // console.log(this.placemarks)
+        this.placemarks = arr
+        this.changeLoadingState(false)
       },
-      initHandler: function () {
-        console.log('init')
-        // console.log(this.placemarks)
-      },
-      initPlacemarks: () => {
-        let arr1 = []
-        this.adds.forEach((item) => {
-            const coord = item.coordinates
-            arr1.push({
-              coords: [coord.lat, coord.lng],
-              properties: {},
-              options: {
-                iconLayout: 'default#image',
-                iconImageHref: wp_data.plugin_dir_url + 'img/' + item.iconImage,
-                iconImageSize: [40, 40],
-                iconImageOffset: [0, 0],
-              },
-              callbacks: {click: (event) => {console.log(event)}},
-            })
-          },
-        )
-        return arr1
-      }
     },
     computed: {
-      ...mapState(['coords', 'adds'])
-    }
+      ...mapState(['coords', 'adds']),
+    },
   }
 </script>
 

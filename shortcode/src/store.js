@@ -11,7 +11,6 @@ export default new Vuex.Store({
     loading: true,
     visibility: 'all',
     coords: [],
-    // placemarks: [],
   },
   getters: {
     filters: state => {
@@ -39,31 +38,16 @@ export default new Vuex.Store({
   mutations: {
     initAddress (state, address) {
       state.adds = _.sortBy(address, ['city', 'street']).map((item) => {
-        return {...item, iconImage: 'circle.svg'}
+        return {
+          ...item,
+          iconImage: 'circle.svg',
+        }
       })
 
       const coord = state.adds[0].coordinates
       state.coords = [coord.lat, coord.lng]
 
     },
-    /*initPlacemarks (state) {
-      state.adds.forEach((item) => {
-          const coord = item.coordinates
-          state.placemarks.push({
-            coords: [coord.lat, coord.lng],
-            properties: {},
-            options: {
-              iconLayout: 'default#image',
-              iconImageHref: wp_data.plugin_dir_url + 'img/circle.svg',
-              iconImageSize: [40, 40],
-              iconImageOffset: [0, 0],
-            },
-            // callbacks: {click: (event) => {console.log(event)}},
-          })
-        },
-      )
-      console.log(state.placemarks)
-    },*/
     changeLoadingState (state, loading) {
       state.loading = loading
     },
