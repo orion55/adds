@@ -11,7 +11,7 @@ export default new Vuex.Store({
     loading: true,
     visibility: 'all',
     coords: [],
-    placemarks: [],
+    // placemarks: [],
   },
   getters: {
     filters: state => {
@@ -26,7 +26,6 @@ export default new Vuex.Store({
         .then((response) => {
           if (response.data.success) {
             commit('initAddress', response.data.data)
-            commit('initPlacemarks')
           } else {
             console.log(response.data.data)
           }
@@ -39,13 +38,15 @@ export default new Vuex.Store({
   },
   mutations: {
     initAddress (state, address) {
-      state.adds = _.sortBy(address, ['city', 'street'])
+      state.adds = _.sortBy(address, ['city', 'street']).map((item) => {
+        return {...item, iconImage: 'circle.svg'}
+      })
 
       const coord = state.adds[0].coordinates
       state.coords = [coord.lat, coord.lng]
 
     },
-    initPlacemarks (state) {
+    /*initPlacemarks (state) {
       state.adds.forEach((item) => {
           const coord = item.coordinates
           state.placemarks.push({
@@ -62,7 +63,7 @@ export default new Vuex.Store({
         },
       )
       console.log(state.placemarks)
-    },
+    },*/
     changeLoadingState (state, loading) {
       state.loading = loading
     },
