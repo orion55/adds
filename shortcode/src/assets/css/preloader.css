@@ -21,9 +21,9 @@
     border-radius: 50%;
     border: 2px solid;
     border-top-color: #2666F6;
-    border-bottom-color: rgba(0, 0, 0, 0.15);
+    border-bottom-color: white;
     border-left-color: #2666F6;
-    border-right-color: rgba(0, 0, 0, 0.15);
+    border-right-color: #2666F6;
     animation: page-loader-circle 0.8s linear infinite;
 }
 
