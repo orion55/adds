@@ -12,11 +12,12 @@
 </script>
 
 <style lang="scss">
-    @import "../assets/css/btn.css";
+    @import "../assets/css/btn";
+    @import "../assets/css/vars";
 
     .footer-adds {
         height: 60px;
-        background-color: #245EF6;
+        background-color: $color-main;
         color: white;
         display: flex;
         justify-content: space-between;

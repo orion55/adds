@@ -1,3 +1,5 @@
+@import "vars";
+
 button {
     padding: 0;
     border: none;
@@ -34,7 +36,7 @@ button {
 }
 
 .btn:hover {
-    color: #245EF6;;
+    color: $color-main;
     border-color: white;
     background-color: white;
 }

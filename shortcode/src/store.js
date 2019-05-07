@@ -11,6 +11,8 @@ export default new Vuex.Store({
     loading: true,
     visibility: 'all',
     coords: [],
+    bubbleID: 0,
+    bubbleVisibility: true
   },
   getters: {
     filters: state => {

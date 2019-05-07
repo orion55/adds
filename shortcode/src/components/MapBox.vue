@@ -1,4 +1,5 @@
 <template>
+
     <yandex-map zoom="14" id="map-box" :options="options" :coords="coords"
                 @map-was-initialized="initHandler"
                 :scrollZoom="scrollZoom" :placemarks="placemarks"
@@ -16,7 +17,7 @@
     store,
     components: {
       yandexMap,
-      ymapMarker,
+      ymapMarker
     },
     data () {
       return {
@@ -58,11 +59,12 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import "../assets/css/vars";
+
     #map-box {
         width: 60%;
-        height: 800px;
+        height: $height-body;
         background-color: #DFE4E6;
     }
-
 </style>

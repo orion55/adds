@@ -15,9 +15,11 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import "../assets/css/vars";
+
     #list-box {
         width: 40%;
-        height: 800px;
+        height: $height-body;
     }
 </style>
