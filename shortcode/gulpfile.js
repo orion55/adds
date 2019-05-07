@@ -18,7 +18,8 @@ gulp.task('deploy-ftp', function () {
     'dist/**',
   ]
 
-  return gulp.src(globs,
+  return gulp.src(
+    globs,
     {
       base: '.',
       buffer: false,
@@ -38,5 +39,7 @@ gulp.task('vue-build-task', function () {
 })
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/*.*', './src/components/*.*', './src/components/ListAddress/*.*'], ['vue-build-task'])
+  gulp.watch(
+    ['./src/*.*', './src/components/*.*', './src/assets/css/*.*', './src/components/ListAddress/*.*'],
+    ['vue-build-task'])
 })
