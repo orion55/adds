@@ -49,6 +49,7 @@ export default new Vuex.Store({
       const coord = state.adds[0].coordinates
       state.coords = [coord.lat, coord.lng]
 
+      state.bubbleID = state.adds[0].id
     },
     changeLoadingState (state, loading) {
       state.loading = loading

@@ -1,16 +1,20 @@
 <template>
     <div class="bubble">
-
+        {{info.id}}
     </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import _ from 'lodash'
 
   export default {
     name: 'baloon',
     computed: {
-      ...mapState(['bubbleID', 'bubbleVisibility'])
+      ...mapState(['adds', 'bubbleID', 'bubbleVisibility']),
+      info: function () {
+        return (this.bubbleID > 0) ? _.find(this.adds, {'id': this.bubbleID}) : {}
+      }
     }
   }
 </script>
