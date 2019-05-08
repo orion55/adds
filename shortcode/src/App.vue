@@ -3,7 +3,7 @@
         <Preloader></Preloader>
         <MapBox></MapBox>
         <ListBox></ListBox>
-        <Bubble></Bubble>
+<!--        <Bubble></Bubble>-->
     </div>
 </template>
 

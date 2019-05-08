@@ -1,23 +1,28 @@
 <template>
+    <div id="map-box">
+        <yandex-map zoom="14" :options="options" :coords="coords"
+                    @map-was-initialized="initHandler"
+                    :scrollZoom="scrollZoom" :placemarks="placemarks"
+        >
+        </yandex-map>
 
-    <yandex-map zoom="14" id="map-box" :options="options" :coords="coords"
-                @map-was-initialized="initHandler"
-                :scrollZoom="scrollZoom" :placemarks="placemarks"
-    >
-    </yandex-map>
+        <Bubble></Bubble>
+    </div>
 </template>
 
 <script>
   import { yandexMap, ymapMarker } from 'vue-yandex-maps'
   import store from '../store'
   import { mapMutations, mapState } from 'vuex'
+  import Bubble from './Bubble'
 
   export default {
     name: 'MapBox',
     store,
     components: {
       yandexMap,
-      ymapMarker
+      ymapMarker,
+      Bubble
     },
     data () {
       return {
@@ -66,5 +71,11 @@
         width: 60%;
         height: $height-body;
         background-color: #DFE4E6;
+        position: relative;
+    }
+
+    .ymap-container {
+        width: 100%;
+        height: 100%;
     }
 </style>

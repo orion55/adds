@@ -39,8 +39,11 @@
 
     .bubble {
         position: absolute;
-        left: 19%;
-        bottom: 51%;
+        top: 48px;
+        left: 50%;
+        transform: translateX(-50%);
+        /*left: 19%;
+        bottom: 51%;*/
         width: 330px;
         height: 340px;
         background: #FFFFFF;
