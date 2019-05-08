@@ -60,11 +60,16 @@ button {
   font-size: 10px;
   margin: 0 4px 0 0;
   position: relative;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  transition-duration: 0.3s;
+  transition-property: transform;
 
   &:hover {
-    background-color: $color-main;
-    color: white;
-    border: 1px solid $color-main;
+    background-color: white;
+    color: #666F78;
+    border: 1px solid #B8BFC5;
+    transform: scale(1.15);
   }
 }
 
@@ -74,8 +79,12 @@ button {
   border: 1px solid $color-main;
 
   &:hover {
-    background-color: white;
-    color: $color-main;
+    /*background-color: white;
+    color: $color-main;*/
+    background-color: $color-main;
+    color: white;
+    border: 1px solid $color-main;
+    transform: scale(1.15);
   }
 }
 

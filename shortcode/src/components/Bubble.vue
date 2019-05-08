@@ -1,38 +1,55 @@
 <template>
-    <div class="bubble">
-        <div class="bubble__cros"></div>
-        <div class="bubble__city">{{info.city}}</div>
-        <div class="bubble__street">{{info.street}}</div>
-        <div class="bubble__box">
-            <span class="bubble__code">{{info.code}}</span>
-            <span class="bubble__size">{{info.size}}</span>
-        </div>
-        <div class="bubble__picture">
-            <img :src="imgSrc" alt="" class="bubble__img">
-        </div>
-        <div class="bubble__sides">
-            <div :class="['btn', 'btn--sides', index === activeSide ? 'btn--active' : '',]"
-                 v-for="(side, index) of info.sides"><span v-if="side.status" class="btn--selected"></span>{{side.name}}
+    <transition name="fade">
+        <div class="bubble" v-if="bubbleVisibility">
+            <div class="bubble__cros" @click="changeBubbleShow(false)"></div>
+            <div class="bubble__city">{{info.city}}</div>
+            <div class="bubble__street">{{info.street}}</div>
+            <div class="bubble__box">
+                <span class="bubble__code">{{info.code}}</span>
+                <span class="bubble__size">{{info.size}}</span>
             </div>
-            <div class="btn btn--choice" v-if="!_.isEmpty(info) && !info.sides[activeSide].status"><span
-                    class="bubble__plus"></span>Добавить
+            <div class="bubble__picture">
+                <transition name="fade">
+                    <img :src="imgSrc" alt="" class="bubble__img" :key="imgSrc">
+                </transition>
             </div>
-            <div class="btn btn--choice btn--alert" v-else><span class="bubble__minus"></span><span
-                    class="bubble__text-alert">Убрать</span></div>
+            <div class="bubble__sides">
+                <div :class="['btn', 'btn--sides', index === activeSide ? 'btn--active' : '',]"
+                     v-for="(side, index) of info.sides" @click="changeSide(index)"
+                     :key="index"><span
+                        v-if="side.status"
+                        class="btn--selected"></span>{{side.name}}
+                </div>
+                <div class="btn btn--choice"
+                     v-if="!_.isEmpty(info) && !info.sides[activeSide].status"><span
+                        class="bubble__plus"></span>Добавить
+                </div>
+                <div class="btn btn--choice btn--alert" v-else><span
+                        class="bubble__minus"></span><span
+                        class="bubble__text-alert">Убрать</span></div>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import _ from 'lodash'
 
   export default {
     name: 'baloon',
     data: function () {
       return {
-        activeSide: 0
+        activeSide: 0,
       }
+    },
+    methods: {
+      ...mapMutations(['changeBubbleShow']),
+      changeSide: function (index) {
+        if (index !== this.activeSide) {
+          this.activeSide = index
+        }
+      },
     },
     computed: {
       ...mapState(['adds', 'bubbleID', 'bubbleVisibility']),
@@ -44,13 +61,14 @@
       },
       imgSrc: function () {
         return !_.isEmpty(this.info) ? this.info.sides[this.activeSide].img_small : ''
-      }
+      },
     },
   }
 </script>
 
 <style lang="scss" scoped>
     @import "../assets/css/btn";
+    @import "../assets/css/transition.css";
 
     .bubble {
         position: absolute;

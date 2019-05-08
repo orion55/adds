@@ -12,7 +12,7 @@ export default new Vuex.Store({
     visibility: 'all',
     coords: [],
     bubbleID: 0,
-    bubbleVisibility: true
+    bubbleVisibility: true,
   },
   getters: {
     filters: state => {
@@ -30,7 +30,6 @@ export default new Vuex.Store({
           } else {
             console.log(response.data.data)
           }
-          // commit('changeLoadingState', false)
         })
         .catch((error) => {
           console.log(error)
@@ -55,10 +54,17 @@ export default new Vuex.Store({
       state.loading = loading
     },
     changeCheck (state, index) {
+      this.commit('changeBubbleShow', false)
+
       let item = _.find(state.adds, {'id': index})
-      // item.check = !item.check
       const coord = item.coordinates
       state.coords = [coord.lat, coord.lng]
+      state.bubbleID = item.id
+
+      this.commit('changeBubbleShow', true)
+    },
+    changeBubbleShow (state, flag) {
+      state.bubbleVisibility = flag
     },
   },
 })
