@@ -8,13 +8,17 @@
             <span class="bubble__size">{{info.size}}</span>
         </div>
         <div class="bubble__picture">
-            <img src="http://adds.infoblog72.ru/wp-content/uploads/2019/05/grzbb8006a-doroga-groznyj-argun-vezd-v-g.-groznyj-so-storony-g.-arguna-arka-100-m.-300x200.jpg"
-                 alt="" class="bubble__img">
+            <img :src="imgSrc" alt="" class="bubble__img">
         </div>
         <div class="bubble__sides">
-            <div class="btn btn--sides btn--active">A</div>
-            <div class="btn btn--sides"><span class="btn--selected"></span>B</div>
-            <div class="btn btn--choice"><span class="bubble__plus"></span>Добавить</div>
+            <div :class="['btn', 'btn--sides', index === activeSide ? 'btn--active' : '',]"
+                 v-for="(side, index) of info.sides"><span v-if="side.status" class="btn--selected"></span>{{side.name}}
+            </div>
+            <div class="btn btn--choice" v-if="!_.isEmpty(info) && !info.sides[activeSide].status"><span
+                    class="bubble__plus"></span>Добавить
+            </div>
+            <div class="btn btn--choice btn--alert" v-else><span class="bubble__minus"></span><span
+                    class="bubble__text-alert">Убрать</span></div>
         </div>
     </div>
 </template>
@@ -25,11 +29,22 @@
 
   export default {
     name: 'baloon',
+    data: function () {
+      return {
+        activeSide: 0
+      }
+    },
     computed: {
       ...mapState(['adds', 'bubbleID', 'bubbleVisibility']),
       info: function () {
         return (this.bubbleID > 0) ? _.find(this.adds, {'id': this.bubbleID}) : {}
       },
+      _ () {
+        return _
+      },
+      imgSrc: function () {
+        return !_.isEmpty(this.info) ? this.info.sides[this.activeSide].img_small : ''
+      }
     },
   }
 </script>
@@ -40,10 +55,8 @@
     .bubble {
         position: absolute;
         top: 48px;
-        left: 50%;
+        left: calc(50% + 10px);
         transform: translateX(-50%);
-        /*left: 19%;
-        bottom: 51%;*/
         width: 330px;
         height: 340px;
         background: #FFFFFF;
@@ -133,4 +146,15 @@
         margin-right: 5px;
     }
 
+    .bubble__minus {
+        width: 20px;
+        height: 20px;
+        background: url("../assets/svg/minus.svg") center no-repeat;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .bubble__text-alert {
+        color: #DB545C;
+    }
 </style>

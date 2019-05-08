@@ -5,7 +5,6 @@
                     :scrollZoom="scrollZoom" :placemarks="placemarks"
         >
         </yandex-map>
-
         <Bubble></Bubble>
     </div>
 </template>

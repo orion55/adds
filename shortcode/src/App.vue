@@ -3,14 +3,12 @@
         <Preloader></Preloader>
         <MapBox></MapBox>
         <ListBox></ListBox>
-<!--        <Bubble></Bubble>-->
     </div>
 </template>
 
 <script>
   import MapBox from './components/MapBox'
   import ListBox from './components/ListBox'
-  import Bubble from './components/Bubble'
   import Preloader from './components/Preloader'
   import store from './store'
   import { mapState } from 'vuex'
@@ -18,7 +16,7 @@
   export default {
     name: 'app',
     store,
-    components: {MapBox, ListBox, Bubble, Preloader},
+    components: {MapBox, ListBox, Preloader},
     mounted () {
       this.$store.dispatch('loadData')
     },
