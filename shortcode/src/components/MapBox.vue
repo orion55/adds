@@ -2,7 +2,7 @@
     <div id="map-box">
         <yandex-map :zoom="14" :options="options" :coords="coords"
                     @map-was-initialized="initHandler"
-                    :scrollZoom="scrollZoom" :placemarks="placemarks" ref="mapschild"
+                    :scrollZoom="scrollZoom" :placemarks="placemarks" ref="yamaps"
         >
         </yandex-map>
         <Bubble></Bubble>
@@ -35,7 +35,7 @@
       }
     },
     methods: {
-      ...mapMutations(['changeLoadingState']),
+      ...mapMutations(['changeLoadingState', 'changeCheck', 'changeBubbleShow']),
       initHandler: function () {
         let arr = []
         store.state.adds.forEach((item) => {
@@ -43,7 +43,7 @@
             arr.push({
               coords: [coord.lat, coord.lng],
               properties: {},
-              clusterName: '1',
+              clusterName: item.id + '',
               options: {
                 iconLayout: 'default#image',
                 iconImageHref: wp_data.plugin_dir_url + 'img/' + item.iconImage,
@@ -52,9 +52,7 @@
               },
               callbacks: {
                 click: (event) => {
-                  console.log(event)
-                  var coords = event.get('coords')
-                  console.log(coords.join(', '))
+                  this.changeCheck(+event.get('target').clusterName)
                 },
               },
             })
@@ -63,10 +61,17 @@
         this.placemarks = arr
 
         this.changeLoadingState(false)
+
+        this.$refs.yamaps.myMap.events.add('actiontick', (e) => {
+          if (this.bubbleVisibility) {
+            this.changeBubbleShow(false)
+          }
+        })
+
       },
     },
     computed: {
-      ...mapState(['coords', 'adds']),
+      ...mapState(['coords', 'adds', 'bubbleVisibility']),
     },
   }
 </script>

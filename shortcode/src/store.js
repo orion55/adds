@@ -54,19 +54,19 @@ export default new Vuex.Store({
       state.loading = loading
     },
     changeCheck (state, index) {
-      this.commit('changeBubbleShow', false)
+      if (state.bubbleVisibility) {
+        this.commit('changeBubbleShow', false)
+      }
+      _.delay(() => { this.commit('changeBubbleShow', true) }, 500)
 
       let item = _.find(state.adds, {'id': index})
       const coord = item.coordinates
       state.coords = [coord.lat, coord.lng]
       state.bubbleID = item.id
 
-      _.delay(() => {
-        this.commit('changeBubbleShow', true)
-      }, 500)
     },
     changeBubbleShow (state, flag) {
       state.bubbleVisibility = flag
-    }
+    },
   },
 })
