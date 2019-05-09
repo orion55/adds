@@ -1,8 +1,8 @@
 <template>
     <div id="map-box">
-        <yandex-map zoom="14" :options="options" :coords="coords"
+        <yandex-map :zoom="zoomMap" :options="options" :coords="coords"
                     @map-was-initialized="initHandler"
-                    :scrollZoom="scrollZoom" :placemarks="placemarks"
+                    :scrollZoom="scrollZoom" :placemarks="placemarks" ref="mapschild"
         >
         </yandex-map>
         <Bubble></Bubble>
@@ -21,12 +21,12 @@
     components: {
       yandexMap,
       ymapMarker,
-      Bubble
+      Bubble,
     },
     data () {
       return {
         options: {
-          apiKey: wp_data.api_key,
+          // apiKey: wp_data.api_key,
           lang: 'ru_RU',
           version: '2.1',
         },
@@ -55,10 +55,14 @@
         )
         this.placemarks = arr
         this.changeLoadingState(false)
+
+        this.$refs.mapschild.myMap.setZoom(4, {
+          duration: 1000,
+        })
       },
     },
     computed: {
-      ...mapState(['coords', 'adds']),
+      ...mapState(['coords', 'adds', 'zoomMap']),
     },
   }
 </script>

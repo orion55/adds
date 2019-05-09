@@ -1,5 +1,7 @@
 <template>
-    <transition name="fade">
+    <transition name="custom-classes-transition"
+                enter-active-class="animated fadeIn fast"
+                leave-active-class="animated fadeOut">
         <div class="bubble" v-if="bubbleVisibility">
             <div class="bubble__cros" @click="changeBubbleShow(false)"></div>
             <div class="bubble__city">{{info.city}}</div>
@@ -9,7 +11,7 @@
                 <span class="bubble__size">{{info.size}}</span>
             </div>
             <div class="bubble__picture">
-                <transition name="fade">
+                <transition name="fadeimg">
                     <img :src="imgSrc" alt="" class="bubble__img" :key="imgSrc">
                 </transition>
             </div>
@@ -61,6 +63,11 @@
       },
       imgSrc: function () {
         return !_.isEmpty(this.info) ? this.info.sides[this.activeSide].img_small : ''
+      },
+    },
+    watch: {
+      bubbleID: function () {
+        this.activeSide = 0
       },
     },
   }
