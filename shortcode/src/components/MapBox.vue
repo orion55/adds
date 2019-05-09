@@ -1,6 +1,6 @@
 <template>
     <div id="map-box">
-        <yandex-map :zoom="zoomMap" :options="options" :coords="coords"
+        <yandex-map :zoom="14" :options="options" :coords="coords"
                     @map-was-initialized="initHandler"
                     :scrollZoom="scrollZoom" :placemarks="placemarks" ref="mapschild"
         >
@@ -43,26 +43,30 @@
             arr.push({
               coords: [coord.lat, coord.lng],
               properties: {},
+              clusterName: '1',
               options: {
                 iconLayout: 'default#image',
                 iconImageHref: wp_data.plugin_dir_url + 'img/' + item.iconImage,
                 iconImageSize: [40, 40],
                 iconImageOffset: [0, 0],
               },
-              callbacks: {click: (event) => {console.log(event)}},
+              callbacks: {
+                click: (event) => {
+                  console.log(event)
+                  var coords = event.get('coords')
+                  console.log(coords.join(', '))
+                },
+              },
             })
           },
         )
         this.placemarks = arr
-        this.changeLoadingState(false)
 
-        this.$refs.mapschild.myMap.setZoom(4, {
-          duration: 1000,
-        })
+        this.changeLoadingState(false)
       },
     },
     computed: {
-      ...mapState(['coords', 'adds', 'zoomMap']),
+      ...mapState(['coords', 'adds']),
     },
   }
 </script>

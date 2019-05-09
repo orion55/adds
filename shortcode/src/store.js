@@ -11,9 +11,8 @@ export default new Vuex.Store({
     loading: true,
     visibility: 'all',
     coords: [],
-    zoomMap: 14,
     bubbleID: 0,
-    bubbleVisibility: true,
+    bubbleVisibility: false,
   },
   getters: {
     filters: state => {
@@ -57,7 +56,6 @@ export default new Vuex.Store({
     changeCheck (state, index) {
       this.commit('changeBubbleShow', false)
 
-      state.zoomMap = 14
       let item = _.find(state.adds, {'id': index})
       const coord = item.coordinates
       state.coords = [coord.lat, coord.lng]
@@ -65,10 +63,10 @@ export default new Vuex.Store({
 
       _.delay(() => {
         this.commit('changeBubbleShow', true)
-      }, 1000)
+      }, 500)
     },
     changeBubbleShow (state, flag) {
       state.bubbleVisibility = flag
-    },
+    }
   },
 })
