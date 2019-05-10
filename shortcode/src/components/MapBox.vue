@@ -71,7 +71,16 @@
       },
     },
     computed: {
-      ...mapState(['coords', 'adds', 'bubbleVisibility']),
+      ...mapState(['coords', 'adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide']),
+    },
+    watch: {
+      bubbleActiveSide: function (newID, oldID) {
+        // console.log(newID, oldID)
+        let place = _.find(this.placemarks, {'clusterName': this.bubbleID + ''})
+        let item = _.find(this.adds, {'id': this.bubbleID})
+        place.options.iconImageHref = wp_data.plugin_dir_url + 'img/' + item.iconImage
+        console.log(place)
+      },
     },
   }
 </script>

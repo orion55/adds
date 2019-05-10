@@ -5,6 +5,8 @@ import _ from 'lodash'
 
 Vue.use(Vuex, axios)
 
+const circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg']
+
 export default new Vuex.Store({
   state: {
     adds: [],
@@ -13,6 +15,7 @@ export default new Vuex.Store({
     coords: [],
     bubbleID: 0,
     bubbleVisibility: false,
+    bubbleActiveSide: 99,
   },
   getters: {
     filters: state => {
@@ -39,6 +42,17 @@ export default new Vuex.Store({
   mutations: {
     initAddress (state, address) {
       state.adds = _.sortBy(address, ['city', 'street']).map((item) => {
+
+        item.sides = item.sides.map((side) => {
+          if (side.img_small === '') {
+            side.img_small = wp_data.plugin_dir_url + 'img/placeholder-small.jpg'
+          }
+          if (side.img_full === '') {
+            side.img_full = wp_data.plugin_dir_url + 'img/placeholder-full.jpg'
+          }
+          return side
+        })
+
         return {
           ...item,
           iconImage: 'circle.svg',
@@ -57,16 +71,34 @@ export default new Vuex.Store({
       if (state.bubbleVisibility) {
         this.commit('changeBubbleShow', false)
       }
-      _.delay(() => { this.commit('changeBubbleShow', true) }, 500)
 
       let item = _.find(state.adds, {'id': index})
       const coord = item.coordinates
       state.coords = [coord.lat, coord.lng]
+
       state.bubbleID = item.id
+      _.delay(() => { this.commit('changeBubbleShow', true) }, 500)
 
     },
     changeBubbleShow (state, flag) {
       state.bubbleVisibility = flag
+    },
+    changeSideStatus (state, index) {
+      let item = _.find(state.adds, {'id': state.bubbleID})
+      item.sides[index].status = !item.sides[index].status
+      state.bubbleActiveSide = index
+
+      item.check = item.sides.some((side) => {
+        return side.status
+      })
+
+      let countActiveSides = 0
+      item.sides.forEach((side) => {
+        if (side.status) {
+          countActiveSides++
+        }
+      })
+      item.iconImage = countActiveSides < 2 ? circleImg[countActiveSides] : circleImg[2]
     },
   },
 })

@@ -23,10 +23,11 @@
                         class="btn--selected"></span>{{side.name}}
                 </div>
                 <div class="btn btn--choice"
-                     v-if="!_.isEmpty(info) && !info.sides[activeSide].status"><span
+                     v-if="!_.isEmpty(info) && !info.sides[activeSide].status"
+                     @click="changeSideStatus(activeSide)"><span
                         class="bubble__plus"></span>Добавить
                 </div>
-                <div class="btn btn--choice btn--alert" v-else><span
+                <div class="btn btn--choice btn--alert" v-else @click="changeSideStatus(activeSide)"><span
                         class="bubble__minus"></span><span
                         class="bubble__text-alert">Убрать</span></div>
             </div>
@@ -46,7 +47,7 @@
       }
     },
     methods: {
-      ...mapMutations(['changeBubbleShow']),
+      ...mapMutations(['changeBubbleShow', 'changeSideStatus']),
       changeSide: function (index) {
         if (index !== this.activeSide) {
           this.activeSide = index
