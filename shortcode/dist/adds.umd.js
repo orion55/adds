@@ -22588,7 +22588,7 @@ var circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg'];
     bubbleID: 0,
     bubbleVisibility: false,
     bubbleActiveSide: 0,
-    detailsVisibility: true
+    detailsVisibility: false
   },
   getters: {
     filters: function filters(state) {
