@@ -10,24 +10,25 @@
                 <span class="bubble__code">{{info.code}}</span>
                 <span class="bubble__size">{{info.size}}</span>
             </div>
-            <div class="bubble__picture">
+            <div class="bubble__picture" @click="changeDetailsShow()">
                 <transition name="fadeimg">
                     <img :src="imgSrc" alt="" class="bubble__img" :key="imgSrc">
                 </transition>
             </div>
             <div class="bubble__sides">
-                <div :class="['btn', 'btn--sides', index === activeSide ? 'btn--active' : '',]"
+                <div :class="['btn', 'btn--sides', index === bubbleActiveSide ? 'btn--active' : '',]"
                      v-for="(side, index) of info.sides" @click="changeSide(index)"
                      :key="index"><span
                         v-if="side.status"
                         class="btn--selected"></span>{{side.name}}
                 </div>
                 <div class="btn btn--choice"
-                     v-if="!_.isEmpty(info) && !info.sides[activeSide].status"
-                     @click="changeSideStatus(activeSide)"><span
+                     v-if="!_.isEmpty(info) && !info.sides[bubbleActiveSide].status"
+                     @click="changeSideStatus(bubbleActiveSide)"><span
                         class="bubble__plus"></span>Добавить
                 </div>
-                <div class="btn btn--choice btn--alert" v-else @click="changeSideStatus(activeSide)"><span
+                <div class="btn btn--choice btn--alert" v-else
+                     @click="changeSideStatus(bubbleActiveSide)"><span
                         class="bubble__minus"></span><span
                         class="bubble__text-alert">Убрать</span></div>
             </div>
@@ -41,21 +42,16 @@
 
   export default {
     name: 'baloon',
-    data: function () {
-      return {
-        activeSide: 0,
-      }
-    },
     methods: {
-      ...mapMutations(['changeBubbleShow', 'changeSideStatus']),
+      ...mapMutations(['changeBubbleShow', 'changeSideStatus', 'changeDetailsShow', 'changeBubbleActiveSide']),
       changeSide: function (index) {
-        if (index !== this.activeSide) {
-          this.activeSide = index
+        if (index !== this.bubbleActiveSide) {
+          this.changeBubbleActiveSide(index)
         }
       },
     },
     computed: {
-      ...mapState(['adds', 'bubbleID', 'bubbleVisibility']),
+      ...mapState(['adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide']),
       info: function () {
         return (this.bubbleID > 0) ? _.find(this.adds, {'id': this.bubbleID}) : {}
       },
@@ -63,14 +59,9 @@
         return _
       },
       imgSrc: function () {
-        return !_.isEmpty(this.info) ? this.info.sides[this.activeSide].img_small : ''
+        return !_.isEmpty(this.info) ? this.info.sides[this.bubbleActiveSide].img_small : ''
       },
-    },
-    watch: {
-      bubbleID: function () {
-        this.activeSide = 0
-      },
-    },
+    }
   }
 </script>
 
@@ -108,6 +99,15 @@
         height: 200px;
         width: 300px;
         margin: 0 0 10px 0;
+        cursor: pointer;
+        border: 1px solid transparent;
+        padding: 2px;
+        transition: border .5s ease-out;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid $color-main;
+        }
     }
 
     .bubble__img {

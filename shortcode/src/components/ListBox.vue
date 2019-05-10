@@ -21,5 +21,7 @@
     #list-box {
         width: 40%;
         height: $height-body;
+        z-index: 1;
+        position: relative;
     }
 </style>

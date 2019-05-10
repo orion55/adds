@@ -15,7 +15,8 @@ export default new Vuex.Store({
     coords: [],
     bubbleID: 0,
     bubbleVisibility: false,
-    bubbleActiveSide: 99,
+    bubbleActiveSide: 0,
+    detailsVisibility: true,
   },
   getters: {
     filters: state => {
@@ -77,6 +78,8 @@ export default new Vuex.Store({
       state.coords = [coord.lat, coord.lng]
 
       state.bubbleID = item.id
+      state.bubbleActiveSide = 0
+
       _.delay(() => { this.commit('changeBubbleShow', true) }, 500)
 
     },
@@ -99,6 +102,12 @@ export default new Vuex.Store({
         }
       })
       item.iconImage = countActiveSides < 2 ? circleImg[countActiveSides] : circleImg[2]
+    },
+    changeDetailsShow (state) {
+      state.detailsVisibility = !state.detailsVisibility
+    },
+    changeBubbleActiveSide (state, index) {
+      state.bubbleActiveSide = index
     },
   },
 })

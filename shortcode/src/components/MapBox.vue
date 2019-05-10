@@ -60,14 +60,13 @@
         )
         this.placemarks = arr
 
-        this.changeLoadingState(false)
-
         this.$refs.yamaps.myMap.events.add('actiontick', (e) => {
           if (this.bubbleVisibility) {
             this.changeBubbleShow(false)
           }
         })
 
+        this.changeLoadingState(false)
       },
     },
     computed: {
@@ -86,15 +85,6 @@
         }
       })
     },
-    /*watch: {
-      bubbleActiveSide: function (newID, oldID) {
-        // console.log(newID, oldID)
-        let place = _.find(this.placemarks, {'clusterName': this.bubbleID + ''})
-        let item = _.find(this.adds, {'id': this.bubbleID})
-        place.options.iconImageHref = wp_data.plugin_dir_url + 'img/' + item.iconImage
-        console.log(place)
-      },
-    },*/
   }
 </script>
 
@@ -106,6 +96,7 @@
         height: $height-body;
         background-color: #DFE4E6;
         position: relative;
+        z-index: 1;
     }
 
     .ymap-container {

@@ -3,6 +3,7 @@
         <Preloader></Preloader>
         <MapBox></MapBox>
         <ListBox></ListBox>
+        <SideDetails></SideDetails>
     </div>
 </template>
 
@@ -10,13 +11,14 @@
   import MapBox from './components/MapBox'
   import ListBox from './components/ListBox'
   import Preloader from './components/Preloader'
+  import SideDetails from './components/SideDetails'
   import store from './store'
   import { mapState } from 'vuex'
 
   export default {
     name: 'app',
     store,
-    components: {MapBox, ListBox, Preloader},
+    components: {MapBox, ListBox, Preloader, SideDetails},
     mounted () {
       this.$store.dispatch('loadData')
     },
@@ -39,5 +41,6 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        z-index: 0;
     }
 </style>
