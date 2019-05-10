@@ -73,7 +73,20 @@
     computed: {
       ...mapState(['coords', 'adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide']),
     },
-    watch: {
+    mounted () {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'changeSideStatus') {
+          const place = _.find(this.placemarks, {'clusterName': this.bubbleID + ''})
+          const placeIndex = _.findIndex(this.placemarks, {'clusterName': this.bubbleID + ''})
+          const item = _.find(this.adds, {'id': this.bubbleID})
+
+          var deep = _.cloneDeep(place)
+          deep.options.iconImageHref = wp_data.plugin_dir_url + 'img/' + item.iconImage
+          this.placemarks.splice(placeIndex, 1, deep)
+        }
+      })
+    },
+    /*watch: {
       bubbleActiveSide: function (newID, oldID) {
         // console.log(newID, oldID)
         let place = _.find(this.placemarks, {'clusterName': this.bubbleID + ''})
@@ -81,7 +94,7 @@
         place.options.iconImageHref = wp_data.plugin_dir_url + 'img/' + item.iconImage
         console.log(place)
       },
-    },
+    },*/
   }
 </script>
 
