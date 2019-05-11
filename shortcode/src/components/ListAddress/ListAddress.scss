@@ -147,3 +147,13 @@
 .list-addr--check {
   color: #245EF6;
 }
+
+@media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+}
+
+@media only screen and (max-width: 767px) {
+  .list-adds__title {
+    display: none;
+  }
+}

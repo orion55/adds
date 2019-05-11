@@ -18,7 +18,12 @@
   export default {
     name: 'app',
     store,
-    components: {MapBox, ListBox, Preloader, SideDetails},
+    components: {
+      MapBox,
+      ListBox,
+      Preloader,
+      SideDetails,
+    },
     mounted () {
       this.$store.dispatch('loadData')
     },
@@ -42,5 +47,16 @@
         justify-content: center;
         position: relative;
         z-index: 0;
+    }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+    }
+
+    @media only screen and (max-width: 767px) {
+        #app-container {
+            flex-direction: column;
+            height: auto;
+        }
     }
 </style>

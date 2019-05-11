@@ -61,7 +61,7 @@
       imgSrc: function () {
         return !_.isEmpty(this.info) ? this.info.sides[this.bubbleActiveSide].img_small : ''
       },
-    }
+    },
   }
 </script>
 
@@ -182,5 +182,19 @@
 
     .bubble__text-alert {
         color: #DB545C;
+    }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+    }
+
+    @media only screen and (max-width: 767px) {
+        .bubble {
+            top: 43px;
+            left: 50%;
+        }
+        .bubble:after {
+            content: none;
+        }
     }
 </style>

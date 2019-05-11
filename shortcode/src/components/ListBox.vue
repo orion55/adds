@@ -24,4 +24,15 @@
         z-index: 1;
         position: relative;
     }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+    }
+
+    @media only screen and (max-width: 767px) {
+        #list-box {
+            height: 400px;
+            width: 100%;
+        }
+    }
 </style>

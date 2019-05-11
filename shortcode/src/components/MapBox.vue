@@ -103,4 +103,15 @@
         width: 100%;
         height: 100%;
     }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+    }
+
+    @media only screen and (max-width: 767px) {
+        #map-box {
+            height: 400px;
+            width: 100%;
+        }
+    }
 </style>

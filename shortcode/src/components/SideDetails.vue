@@ -130,4 +130,28 @@
             background: url("../assets/svg/times-circle-solid.svg") center no-repeat;
         }
     }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+        .details__holder {
+            width: 95%;
+            top: 25%;
+            transform: translate(-50%, -25%);
+        }
+        .details__picture {
+            width: 100%;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+        .details__holder {
+            width: 95%;
+            height: 400px;
+            top: 25%;
+            transform: translate(-50%, -25%);
+        }
+        .details__picture {
+            height: 280px;
+            width: 100%;
+        }
+    }
 </style>
