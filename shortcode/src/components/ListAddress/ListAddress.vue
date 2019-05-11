@@ -37,9 +37,12 @@
                         </div>
                     </div>
                 </div>
-                <FooterAddress></FooterAddress>
+                <transition name="custom-transit"
+                            enter-active-class="animated fadeIn fast"
+                            leave-active-class="animated fadeOut">
+                    <FooterAddress v-if="countActiveSides > 0"></FooterAddress>
+                </transition>
             </div>
         </div>
-
     </div>
 </template>

@@ -1,15 +1,14 @@
-import { mapMutations, mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState} from 'vuex'
 import FooterAddress from '../FooterAddress'
-import store from '../../store'
 
 export default {
   name: 'ListAddress',
-  store,
   components: {
     FooterAddress,
   },
   computed: {
-    ...mapGetters(['filters'])
+    ...mapGetters(['filters']),
+    ...mapState(['countActiveSides']),
   },
   methods: {
     ...mapMutations(['changeCheck']),

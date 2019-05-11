@@ -1,5 +1,5 @@
 <template>
-    <transition name="custom-classes-transition"
+    <transition name="custom-transition"
                 enter-active-class="animated fadeIn fast"
                 leave-active-class="animated fadeOut">
         <div class="details" v-if="detailsVisibility">

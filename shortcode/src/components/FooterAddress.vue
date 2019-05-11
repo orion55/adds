@@ -1,13 +1,17 @@
 <template>
     <div class="footer-adds">
-        <div class="footer-adds--sides">Выбрано сторон<br><span class="footer-adds--count">13</span></div>
+        <div class="footer-adds--sides">Выбрано сторон<br><span class="footer-adds--count">{{countActiveSides}}</span></div>
         <button class="btn">Далее</button>
     </div>
 </template>
 
 <script>
+  import { mapState} from 'vuex'
   export default {
-    name: 'FooterAddress'
+    name: 'FooterAddress',
+    computed: {
+      ...mapState(['countActiveSides']),
+    },
   }
 </script>
 

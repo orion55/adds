@@ -12,11 +12,12 @@ export default new Vuex.Store({
     adds: [],
     loading: true,
     visibility: 'all',
-    coords: [],
+    coords: [43.317776, 45.694909],
     bubbleID: 0,
     bubbleVisibility: false,
     bubbleActiveSide: 0,
     detailsVisibility: false,
+    countActiveSides: 0,
   },
   getters: {
     filters: state => {
@@ -102,12 +103,25 @@ export default new Vuex.Store({
         }
       })
       item.iconImage = countActiveSides < 2 ? circleImg[countActiveSides] : circleImg[2]
+
+      this.commit('calcCountSides')
     },
     changeDetailsShow (state) {
       state.detailsVisibility = !state.detailsVisibility
     },
     changeBubbleActiveSide (state, index) {
       state.bubbleActiveSide = index
+    },
+    calcCountSides (state) {
+      let n = 0
+      state.adds.forEach((item) => {
+        item.sides.forEach((element) => {
+          if (element.status) {
+            n++
+          }
+        })
+      })
+      state.countActiveSides = n
     },
   },
 })
