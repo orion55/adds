@@ -1,22 +1,26 @@
 <template>
-    <div class="details" v-if="detailsVisibility">
-        <div class="details__holder">
-            <div class="details__cros" @click="changeDetailsShow()"></div>
-            <div class="details__city">{{info.city}}</div>
-            <div class="details__street">{{info.street}}</div>
-            <div class="details__box">
-                <span class="details__code">{{info.code}}</span>
-                <span class="details__size">{{info.size}}</span>
-                <span class="details__desc">Сторона:</span>
-                <span class="details__side">{{curSide.name}}</span>
-                <span class="details__desc">Освещение:</span>
-                <span class="details__light">{{curSide.lighting? 'Есть': 'Нет'}}</span>
-            </div>
-            <div class="details__picture">
-                <img :src="curSide.img_full" alt="" class="details__img">
+    <transition name="custom-classes-transition"
+                enter-active-class="animated fadeIn fast"
+                leave-active-class="animated fadeOut">
+        <div class="details" v-if="detailsVisibility">
+            <div class="details__holder">
+                <div class="details__cros" @click="changeDetailsShow()"></div>
+                <div class="details__city">{{info.city}}</div>
+                <div class="details__street">{{info.street}}</div>
+                <div class="details__box">
+                    <span class="details__code">{{info.code}}</span>
+                    <span class="details__size">{{info.size}}</span>
+                    <span class="details__desc">Сторона:</span>
+                    <span class="details__side">{{curSide.name}}</span>
+                    <span class="details__desc">Освещение:</span>
+                    <span class="details__light">{{curSide.lighting? 'Есть': 'Нет'}}</span>
+                </div>
+                <div class="details__picture">
+                    <img :src="curSide.img_full" alt="" class="details__img">
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -41,6 +45,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "../assets/css/transition.css";
+
     .details {
         position: absolute;
         top: 0;
@@ -52,8 +58,8 @@
     }
 
     .details__holder {
-        width: 1040px;
-        height: 600px;
+        width: 940px;
+        height: 620px;
         background-color: white;
         position: absolute;
         top: 50%;
@@ -64,8 +70,8 @@
     }
 
     .details__picture {
-        height: 480px;
-        width: 1000px;
+        height: 500px;
+        width: 900px;
         /*margin: 0 0 10px 0;*/
     }
 

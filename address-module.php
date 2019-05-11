@@ -19,6 +19,7 @@ require plugin_dir_path(__FILE__) . 'inc/ajax-wp.php';
 require plugin_dir_path(__FILE__) . 'shortcode/address-shortcode.php';
 
 add_image_size('billboard-mini', 300, 200, true);
+add_image_size('billboard-full', 900, 500, true);
 
 $shortcode = new Address_Shortcode();
 $shortcode->init();

@@ -43,7 +43,7 @@ function get_billboards()
                         $img_full_link = '';
                         $img_small_link = '';
                         if (!empty($id_img)) {
-                            $img_full_link = wp_get_attachment_image_url($id_img, 'large');
+                            $img_full_link = wp_get_attachment_image_url($id_img, 'billboard-full');
                             $img_small_link = wp_get_attachment_image_url($id_img, 'billboard-mini');
                         }
 

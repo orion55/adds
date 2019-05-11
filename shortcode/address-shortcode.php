@@ -48,7 +48,7 @@ class Address_Shortcode
         $variables = array(
             'plugin_dir_url' => plugin_dir_url(__FILE__),
             'url_ajax' => admin_url('admin-ajax.php'),
-            'api_key' => carbon_get_theme_option('crb_apikey'),
+//            'api_key' => carbon_get_theme_option('crb_apikey'),
             'nonce' => wp_create_nonce('myajax-nonce123')
         );
         echo('<script type="text/javascript">window.wp_data=' . json_encode($variables) . ';</script>');

@@ -16,7 +16,7 @@ export default new Vuex.Store({
     bubbleID: 0,
     bubbleVisibility: false,
     bubbleActiveSide: 0,
-    detailsVisibility: false,
+    detailsVisibility: true,
   },
   getters: {
     filters: state => {
