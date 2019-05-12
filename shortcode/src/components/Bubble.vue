@@ -22,6 +22,7 @@
                         v-if="side.status"
                         class="btn--selected"></span>{{side.name}}
                 </div>
+                <div class="btn btn--choice btn--more" @click="changeDetailsShow()">Подробнее</div>
                 <div class="btn btn--choice"
                      v-if="!_.isEmpty(info) && !info.sides[bubbleActiveSide].status"
                      @click="changeSideStatus(bubbleActiveSide)"><span

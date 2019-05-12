@@ -90,11 +90,11 @@ button {
 
 .btn--choice {
   background-color: white;
+  margin: 0;
   color: $color-main;
   font-weight: 600;
   font-size: 11px;
   padding: 4px 8px;
-  margin: 0 0 0 auto;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -120,3 +120,9 @@ button {
 .btn--alert:hover {
   border: 1px solid #DB545C;
 }
+
+.btn--more {
+  margin: 0 0 0 auto;
+  padding: 6px 3px;
+}
+

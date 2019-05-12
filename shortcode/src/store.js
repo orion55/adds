@@ -18,12 +18,22 @@ export default new Vuex.Store({
     bubbleActiveSide: 0,
     detailsVisibility: false,
     countActiveSides: 0,
+    sortID: 0,
+    sortDirect: 0,
   },
   getters: {
     filters: state => {
-      if (state.visibility === 'all') {
-        return _.sortBy(state.adds, ['city', 'street'])
+      let result = _.sortBy(state.adds, ['city', 'street'])
+
+      let fieldsName = ['check', 'city', 'street', 'blocks']
+      if (state.sortID > 0) {
+        result = _.sortBy(state.adds, fieldsName[state.sortID - 1])
       }
+
+      if (state.sortDirect === 2) {
+        result = result.reverse()
+      }
+      return result
     },
   },
   actions: {
@@ -58,6 +68,7 @@ export default new Vuex.Store({
         return {
           ...item,
           iconImage: 'circle.svg',
+          blocks: '',
         }
       })
 
@@ -104,6 +115,7 @@ export default new Vuex.Store({
       })
       item.iconImage = countActiveSides < 2 ? circleImg[countActiveSides] : circleImg[2]
 
+      this.commit('changeBlocks')
       this.commit('calcCountSides')
     },
     changeDetailsShow (state) {
@@ -122,6 +134,29 @@ export default new Vuex.Store({
         })
       })
       state.countActiveSides = n
+    },
+    changeHeaderState (state, id) {
+      if (state.sortID !== +id) {
+        state.sortDirect = 0
+      }
+
+      state.sortID = +id
+
+      state.sortDirect++
+      if (state.sortDirect > 2) {
+        state.sortDirect = 0
+        state.sortID = 0
+      }
+    },
+    changeBlocks (state) {
+      let item = _.find(state.adds, {'id': state.bubbleID})
+      let str = ''
+      item.sides.forEach((side) => {
+        if (side.status) {
+          str += side.name
+        }
+      })
+      item.blocks = str
     },
   },
 })
