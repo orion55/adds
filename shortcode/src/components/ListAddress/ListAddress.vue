@@ -4,6 +4,7 @@
     <div class="list-adds">
         <div class="list-adds__box">
             <div class="list-adds__title">Адресная программа</div>
+            <SearchBox></SearchBox>
             <div class="list-adds__wrap">
                 <div class="list-adds__header">
                     <div class="list-adds__col list-adds__col--1">
@@ -58,12 +59,14 @@
   import { mapGetters, mapMutations, mapState } from 'vuex'
   import FooterAddress from '../FooterAddress'
   import HeadList from '../HeadList'
+  import SearchBox from '../SearchBox'
 
   export default {
     name: 'ListAddress',
     components: {
       FooterAddress,
       HeadList,
+      SearchBox
     },
     computed: {
       ...mapGetters(['filters']),
