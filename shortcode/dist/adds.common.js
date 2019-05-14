@@ -22640,8 +22640,8 @@ var circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg'];
       }
 
       if (state.searchLine !== '') {
-        result = lodash_default.a.filter(state.adds, function (item) {
-          var str = state.searchLine.toLowerCase();
+        var str = state.searchLine.toLowerCase();
+        result = lodash_default.a.filter(result, function (item) {
           return item.city.toLowerCase().indexOf(str) > -1 || item.street.toLowerCase().indexOf(str) > -1;
         });
       }

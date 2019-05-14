@@ -36,8 +36,8 @@ export default new Vuex.Store({
       }
 
       if (state.searchLine !== '') {
-        result = _.filter(state.adds, function (item) {
-          const str = state.searchLine.toLowerCase()
+        const str = state.searchLine.toLowerCase()
+        result = _.filter(result, function (item) {
           return item.city.toLowerCase().indexOf(str) > -1 || item.street.toLowerCase()
             .indexOf(str) > -1
         })
