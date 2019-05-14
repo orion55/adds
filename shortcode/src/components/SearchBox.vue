@@ -1,12 +1,15 @@
 <template>
     <div :class="['search', { 'search--small': isSmall }]">
         <span class="search__icon" @click="changeSmallActive()"></span>
-        <input type="text" class="search__input" placeholder=""/>
+        <input type="text" class="search__input" @input="updateMessage" :value="searchLine"/>
         <div class="search__close" @click="changeSmall()"></div>
     </div>
 </template>
 
 <script>
+  import { mapMutations, mapState } from 'vuex'
+  import _ from 'lodash'
+
   export default {
     name: 'SearchBox',
     data: function () {
@@ -14,15 +17,23 @@
         isSmall: true,
       }
     },
+    computed: {
+      ...mapState(['searchLine']),
+    },
     methods: {
+      ...mapMutations(['updateSearchLine']),
       changeSmall () {
         this.isSmall = !this.isSmall
+        this.updateSearchLine('')
       },
       changeSmallActive () {
         if (this.isSmall) {
           this.isSmall = !this.isSmall
         }
       },
+      updateMessage: _.debounce(function (e) {
+        this.updateSearchLine(e.target.value.trim())
+      }, 750),
     },
   }
 </script>
@@ -30,8 +41,8 @@
 <style lang="scss" scoped>
     .search {
         position: absolute;
-        top: 32px;
-        right: 10px;
+        top: 29px;
+        right: 15px;
         width: 170px;
         height: 25px;
         border: 1px solid #DFE4E6;

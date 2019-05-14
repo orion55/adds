@@ -20,6 +20,7 @@ export default new Vuex.Store({
     countActiveSides: 0,
     sortID: 0,
     sortDirect: 0,
+    searchLine: '',
   },
   getters: {
     filters: state => {
@@ -32,6 +33,14 @@ export default new Vuex.Store({
 
       if (state.sortDirect === 2) {
         result = result.reverse()
+      }
+
+      if (state.searchLine !== '') {
+        result = _.filter(state.adds, function (item) {
+          const str = state.searchLine.toLowerCase()
+          return item.city.toLowerCase().indexOf(str) > -1 || item.street.toLowerCase()
+            .indexOf(str) > -1
+        })
       }
       return result
     },
@@ -157,6 +166,9 @@ export default new Vuex.Store({
         }
       })
       item.blocks = str
+    },
+    updateSearchLine (state, line) {
+      state.searchLine = line
     },
   },
 })
