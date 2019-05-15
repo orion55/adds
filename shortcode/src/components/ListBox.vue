@@ -1,17 +1,28 @@
 <template>
     <div id="list-box">
-        <ListAddress></ListAddress>
+        <component :is="ListAddress"></component>
     </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import ListAddress from './ListAddress/ListAddress.vue'
+  import ListSelected from './ListSelected.vue'
+
+  const list = ['ListAddress', 'ListSelected']
 
   export default {
     name: 'ListBox',
     components: {
       ListAddress,
+      ListSelected
     },
+    computed: {
+      ...mapState(['listIndex']),
+      curList: function () {
+        return list[this.listIndex]
+      }
+    }
   }
 </script>
 

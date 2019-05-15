@@ -74,15 +74,6 @@
     },
     methods: {
       ...mapMutations(['changeCheck']),
-      /*getSides (sides) {
-        let str = ''
-        sides.forEach((item) => {
-          if (item.status) {
-            str += item.name
-          }
-        })
-        return str
-      },*/
     },
   }
 </script>

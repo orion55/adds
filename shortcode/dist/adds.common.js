@@ -744,6 +744,13 @@ module.exports = (
 
 /***/ }),
 
+/***/ "1bb4":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "1bc3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -965,13 +972,6 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("fde4");
-
-/***/ }),
-
-/***/ "27bc":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -18259,6 +18259,973 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
+/***/ "2f62":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export Store */
+/* unused harmony export install */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mapGetters; });
+/* unused harmony export mapActions */
+/* unused harmony export createNamespacedHelpers */
+/**
+ * vuex v3.1.1
+ * (c) 2019 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (false) {}
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (false) {}
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (false) {}
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (false) {}
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (false) {}
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (false) {}
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    false
+  ) {}
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (false) {}
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (false) {}
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (false) {}
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (false) {}
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {}
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {}
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure enviroment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {}
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {}
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (false) {}
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (false) {}
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (false) {}
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (false) {}
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (false) {}
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (false) {}
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.1.1',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
+
+/***/ }),
+
 /***/ "30b5":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18330,6 +19297,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
+
+/***/ }),
+
+/***/ "3159":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -19643,6 +20617,13 @@ module.exports = __webpack_require__("35e8");
 
 /***/ }),
 
+/***/ "94dc":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "9aa9":
 /***/ (function(module, exports) {
 
@@ -19689,13 +20670,6 @@ module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
 
-
-/***/ }),
-
-/***/ "9cb9":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -20103,17 +21077,6 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ "b803":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_901864d2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("27bc");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_901864d2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_901864d2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_901864d2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "b8e3":
 /***/ (function(module, exports) {
 
@@ -20317,17 +21280,6 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-
-/***/ }),
-
-/***/ "c4c9":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_7c007c43_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9cb9");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_7c007c43_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_7c007c43_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_7c007c43_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -20887,6 +21839,17 @@ module.exports.default = axios;
 
 /***/ }),
 
+/***/ "d302":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_38c4028a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1bb4");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_38c4028a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_38c4028a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_ListAddress_scss_vue_type_style_index_0_id_38c4028a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "d3f4":
 /***/ (function(module, exports) {
 
@@ -21097,6 +22060,17 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
+
+/***/ }),
+
+/***/ "e69b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSelected_vue_vue_type_style_index_0_id_350147ec_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("3159");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSelected_vue_vue_type_style_index_0_id_350147ec_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSelected_vue_vue_type_style_index_0_id_350147ec_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSelected_vue_vue_type_style_index_0_id_350147ec_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -21520,6 +22494,17 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "f996":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_237919ae_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("94dc");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_237919ae_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_237919ae_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBox_vue_vue_type_style_index_0_id_237919ae_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "fa5b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21560,7 +22545,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=37530b7f&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=37530b7f&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app-container"}},[_c('Preloader'),_c('MapBox'),_c('ListBox'),_c('SideDetails')],1)}
 var staticRenderFns = []
 
@@ -21623,7 +22608,7 @@ function _objectSpread(target) {
 
   return target;
 }
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MapBox.vue?vue&type=template&id=0ef4f447&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MapBox.vue?vue&type=template&id=0ef4f447&scoped=true&
 var MapBoxvue_type_template_id_0ef4f447_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"map-box"}},[_c('yandex-map',{ref:"yamaps",attrs:{"zoom":14,"options":_vm.options,"coords":_vm.coords,"scrollZoom":_vm.scrollZoom,"placemarks":_vm.placemarks},on:{"map-was-initialized":_vm.initHandler}}),_c('Bubble')],1)}
 var MapBoxvue_type_template_id_0ef4f447_scoped_true_staticRenderFns = []
 
@@ -21649,947 +22634,8 @@ var es6_function_name = __webpack_require__("7f7f");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/vuex/dist/vuex.esm.js
-/**
- * vuex v3.1.0
- * (c) 2019 Evan You
- * @license MIT
- */
-function applyMixin (Vue) {
-  var version = Number(Vue.version.split('.')[0]);
-
-  if (version >= 2) {
-    Vue.mixin({ beforeCreate: vuexInit });
-  } else {
-    // override init and inject vuex init procedure
-    // for 1.x backwards compatibility.
-    var _init = Vue.prototype._init;
-    Vue.prototype._init = function (options) {
-      if ( options === void 0 ) options = {};
-
-      options.init = options.init
-        ? [vuexInit].concat(options.init)
-        : vuexInit;
-      _init.call(this, options);
-    };
-  }
-
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function vuexInit () {
-    var options = this.$options;
-    // store injection
-    if (options.store) {
-      this.$store = typeof options.store === 'function'
-        ? options.store()
-        : options.store;
-    } else if (options.parent && options.parent.$store) {
-      this.$store = options.parent.$store;
-    }
-  }
-}
-
-var devtoolHook =
-  typeof window !== 'undefined' &&
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
-
-function devtoolPlugin (store) {
-  if (!devtoolHook) { return }
-
-  store._devtoolHook = devtoolHook;
-
-  devtoolHook.emit('vuex:init', store);
-
-  devtoolHook.on('vuex:travel-to-state', function (targetState) {
-    store.replaceState(targetState);
-  });
-
-  store.subscribe(function (mutation, state) {
-    devtoolHook.emit('vuex:mutation', mutation, state);
-  });
-}
-
-/**
- * Get the first item that pass the test
- * by second argument function
- *
- * @param {Array} list
- * @param {Function} f
- * @return {*}
- */
-
-/**
- * forEach for object
- */
-function forEachValue (obj, fn) {
-  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
-}
-
-function isObject (obj) {
-  return obj !== null && typeof obj === 'object'
-}
-
-function isPromise (val) {
-  return val && typeof val.then === 'function'
-}
-
-function assert (condition, msg) {
-  if (!condition) { throw new Error(("[vuex] " + msg)) }
-}
-
-// Base data struct for store's module, package with some attribute and method
-var Module = function Module (rawModule, runtime) {
-  this.runtime = runtime;
-  // Store some children item
-  this._children = Object.create(null);
-  // Store the origin module object which passed by programmer
-  this._rawModule = rawModule;
-  var rawState = rawModule.state;
-
-  // Store the origin module's state
-  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
-};
-
-var prototypeAccessors = { namespaced: { configurable: true } };
-
-prototypeAccessors.namespaced.get = function () {
-  return !!this._rawModule.namespaced
-};
-
-Module.prototype.addChild = function addChild (key, module) {
-  this._children[key] = module;
-};
-
-Module.prototype.removeChild = function removeChild (key) {
-  delete this._children[key];
-};
-
-Module.prototype.getChild = function getChild (key) {
-  return this._children[key]
-};
-
-Module.prototype.update = function update (rawModule) {
-  this._rawModule.namespaced = rawModule.namespaced;
-  if (rawModule.actions) {
-    this._rawModule.actions = rawModule.actions;
-  }
-  if (rawModule.mutations) {
-    this._rawModule.mutations = rawModule.mutations;
-  }
-  if (rawModule.getters) {
-    this._rawModule.getters = rawModule.getters;
-  }
-};
-
-Module.prototype.forEachChild = function forEachChild (fn) {
-  forEachValue(this._children, fn);
-};
-
-Module.prototype.forEachGetter = function forEachGetter (fn) {
-  if (this._rawModule.getters) {
-    forEachValue(this._rawModule.getters, fn);
-  }
-};
-
-Module.prototype.forEachAction = function forEachAction (fn) {
-  if (this._rawModule.actions) {
-    forEachValue(this._rawModule.actions, fn);
-  }
-};
-
-Module.prototype.forEachMutation = function forEachMutation (fn) {
-  if (this._rawModule.mutations) {
-    forEachValue(this._rawModule.mutations, fn);
-  }
-};
-
-Object.defineProperties( Module.prototype, prototypeAccessors );
-
-var ModuleCollection = function ModuleCollection (rawRootModule) {
-  // register root module (Vuex.Store options)
-  this.register([], rawRootModule, false);
-};
-
-ModuleCollection.prototype.get = function get (path) {
-  return path.reduce(function (module, key) {
-    return module.getChild(key)
-  }, this.root)
-};
-
-ModuleCollection.prototype.getNamespace = function getNamespace (path) {
-  var module = this.root;
-  return path.reduce(function (namespace, key) {
-    module = module.getChild(key);
-    return namespace + (module.namespaced ? key + '/' : '')
-  }, '')
-};
-
-ModuleCollection.prototype.update = function update$1 (rawRootModule) {
-  update([], this.root, rawRootModule);
-};
-
-ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
-    var this$1 = this;
-    if ( runtime === void 0 ) runtime = true;
-
-  if (false) {}
-
-  var newModule = new Module(rawModule, runtime);
-  if (path.length === 0) {
-    this.root = newModule;
-  } else {
-    var parent = this.get(path.slice(0, -1));
-    parent.addChild(path[path.length - 1], newModule);
-  }
-
-  // register nested modules
-  if (rawModule.modules) {
-    forEachValue(rawModule.modules, function (rawChildModule, key) {
-      this$1.register(path.concat(key), rawChildModule, runtime);
-    });
-  }
-};
-
-ModuleCollection.prototype.unregister = function unregister (path) {
-  var parent = this.get(path.slice(0, -1));
-  var key = path[path.length - 1];
-  if (!parent.getChild(key).runtime) { return }
-
-  parent.removeChild(key);
-};
-
-function update (path, targetModule, newModule) {
-  if (false) {}
-
-  // update target module
-  targetModule.update(newModule);
-
-  // update nested modules
-  if (newModule.modules) {
-    for (var key in newModule.modules) {
-      if (!targetModule.getChild(key)) {
-        if (false) {}
-        return
-      }
-      update(
-        path.concat(key),
-        targetModule.getChild(key),
-        newModule.modules[key]
-      );
-    }
-  }
-}
-
-var functionAssert = {
-  assert: function (value) { return typeof value === 'function'; },
-  expected: 'function'
-};
-
-var objectAssert = {
-  assert: function (value) { return typeof value === 'function' ||
-    (typeof value === 'object' && typeof value.handler === 'function'); },
-  expected: 'function or object with "handler" function'
-};
-
-var assertTypes = {
-  getters: functionAssert,
-  mutations: functionAssert,
-  actions: objectAssert
-};
-
-function assertRawModule (path, rawModule) {
-  Object.keys(assertTypes).forEach(function (key) {
-    if (!rawModule[key]) { return }
-
-    var assertOptions = assertTypes[key];
-
-    forEachValue(rawModule[key], function (value, type) {
-      assert(
-        assertOptions.assert(value),
-        makeAssertionMessage(path, key, type, value, assertOptions.expected)
-      );
-    });
-  });
-}
-
-function makeAssertionMessage (path, key, type, value, expected) {
-  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
-  if (path.length > 0) {
-    buf += " in module \"" + (path.join('.')) + "\"";
-  }
-  buf += " is " + (JSON.stringify(value)) + ".";
-  return buf
-}
-
-var Vue; // bind on install
-
-var Store = function Store (options) {
-  var this$1 = this;
-  if ( options === void 0 ) options = {};
-
-  // Auto install if it is not done yet and `window` has `Vue`.
-  // To allow users to avoid auto-installation in some cases,
-  // this code should be placed here. See #731
-  if (!Vue && typeof window !== 'undefined' && window.Vue) {
-    install(window.Vue);
-  }
-
-  if (false) {}
-
-  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
-  var strict = options.strict; if ( strict === void 0 ) strict = false;
-
-  // store internal state
-  this._committing = false;
-  this._actions = Object.create(null);
-  this._actionSubscribers = [];
-  this._mutations = Object.create(null);
-  this._wrappedGetters = Object.create(null);
-  this._modules = new ModuleCollection(options);
-  this._modulesNamespaceMap = Object.create(null);
-  this._subscribers = [];
-  this._watcherVM = new Vue();
-
-  // bind commit and dispatch to self
-  var store = this;
-  var ref = this;
-  var dispatch = ref.dispatch;
-  var commit = ref.commit;
-  this.dispatch = function boundDispatch (type, payload) {
-    return dispatch.call(store, type, payload)
-  };
-  this.commit = function boundCommit (type, payload, options) {
-    return commit.call(store, type, payload, options)
-  };
-
-  // strict mode
-  this.strict = strict;
-
-  var state = this._modules.root.state;
-
-  // init root module.
-  // this also recursively registers all sub-modules
-  // and collects all module getters inside this._wrappedGetters
-  installModule(this, state, [], this._modules.root);
-
-  // initialize the store vm, which is responsible for the reactivity
-  // (also registers _wrappedGetters as computed properties)
-  resetStoreVM(this, state);
-
-  // apply plugins
-  plugins.forEach(function (plugin) { return plugin(this$1); });
-
-  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
-  if (useDevtools) {
-    devtoolPlugin(this);
-  }
-};
-
-var prototypeAccessors$1 = { state: { configurable: true } };
-
-prototypeAccessors$1.state.get = function () {
-  return this._vm._data.$$state
-};
-
-prototypeAccessors$1.state.set = function (v) {
-  if (false) {}
-};
-
-Store.prototype.commit = function commit (_type, _payload, _options) {
-    var this$1 = this;
-
-  // check object-style commit
-  var ref = unifyObjectStyle(_type, _payload, _options);
-    var type = ref.type;
-    var payload = ref.payload;
-    var options = ref.options;
-
-  var mutation = { type: type, payload: payload };
-  var entry = this._mutations[type];
-  if (!entry) {
-    if (false) {}
-    return
-  }
-  this._withCommit(function () {
-    entry.forEach(function commitIterator (handler) {
-      handler(payload);
-    });
-  });
-  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
-
-  if (
-    false
-  ) {}
-};
-
-Store.prototype.dispatch = function dispatch (_type, _payload) {
-    var this$1 = this;
-
-  // check object-style dispatch
-  var ref = unifyObjectStyle(_type, _payload);
-    var type = ref.type;
-    var payload = ref.payload;
-
-  var action = { type: type, payload: payload };
-  var entry = this._actions[type];
-  if (!entry) {
-    if (false) {}
-    return
-  }
-
-  try {
-    this._actionSubscribers
-      .filter(function (sub) { return sub.before; })
-      .forEach(function (sub) { return sub.before(action, this$1.state); });
-  } catch (e) {
-    if (false) {}
-  }
-
-  var result = entry.length > 1
-    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
-    : entry[0](payload);
-
-  return result.then(function (res) {
-    try {
-      this$1._actionSubscribers
-        .filter(function (sub) { return sub.after; })
-        .forEach(function (sub) { return sub.after(action, this$1.state); });
-    } catch (e) {
-      if (false) {}
-    }
-    return res
-  })
-};
-
-Store.prototype.subscribe = function subscribe (fn) {
-  return genericSubscribe(fn, this._subscribers)
-};
-
-Store.prototype.subscribeAction = function subscribeAction (fn) {
-  var subs = typeof fn === 'function' ? { before: fn } : fn;
-  return genericSubscribe(subs, this._actionSubscribers)
-};
-
-Store.prototype.watch = function watch (getter, cb, options) {
-    var this$1 = this;
-
-  if (false) {}
-  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
-};
-
-Store.prototype.replaceState = function replaceState (state) {
-    var this$1 = this;
-
-  this._withCommit(function () {
-    this$1._vm._data.$$state = state;
-  });
-};
-
-Store.prototype.registerModule = function registerModule (path, rawModule, options) {
-    if ( options === void 0 ) options = {};
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (false) {}
-
-  this._modules.register(path, rawModule);
-  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
-  // reset store to update getters...
-  resetStoreVM(this, this.state);
-};
-
-Store.prototype.unregisterModule = function unregisterModule (path) {
-    var this$1 = this;
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (false) {}
-
-  this._modules.unregister(path);
-  this._withCommit(function () {
-    var parentState = getNestedState(this$1.state, path.slice(0, -1));
-    Vue.delete(parentState, path[path.length - 1]);
-  });
-  resetStore(this);
-};
-
-Store.prototype.hotUpdate = function hotUpdate (newOptions) {
-  this._modules.update(newOptions);
-  resetStore(this, true);
-};
-
-Store.prototype._withCommit = function _withCommit (fn) {
-  var committing = this._committing;
-  this._committing = true;
-  fn();
-  this._committing = committing;
-};
-
-Object.defineProperties( Store.prototype, prototypeAccessors$1 );
-
-function genericSubscribe (fn, subs) {
-  if (subs.indexOf(fn) < 0) {
-    subs.push(fn);
-  }
-  return function () {
-    var i = subs.indexOf(fn);
-    if (i > -1) {
-      subs.splice(i, 1);
-    }
-  }
-}
-
-function resetStore (store, hot) {
-  store._actions = Object.create(null);
-  store._mutations = Object.create(null);
-  store._wrappedGetters = Object.create(null);
-  store._modulesNamespaceMap = Object.create(null);
-  var state = store.state;
-  // init all modules
-  installModule(store, state, [], store._modules.root, true);
-  // reset vm
-  resetStoreVM(store, state, hot);
-}
-
-function resetStoreVM (store, state, hot) {
-  var oldVm = store._vm;
-
-  // bind store public getters
-  store.getters = {};
-  var wrappedGetters = store._wrappedGetters;
-  var computed = {};
-  forEachValue(wrappedGetters, function (fn, key) {
-    // use computed to leverage its lazy-caching mechanism
-    computed[key] = function () { return fn(store); };
-    Object.defineProperty(store.getters, key, {
-      get: function () { return store._vm[key]; },
-      enumerable: true // for local getters
-    });
-  });
-
-  // use a Vue instance to store the state tree
-  // suppress warnings just in case the user has added
-  // some funky global mixins
-  var silent = Vue.config.silent;
-  Vue.config.silent = true;
-  store._vm = new Vue({
-    data: {
-      $$state: state
-    },
-    computed: computed
-  });
-  Vue.config.silent = silent;
-
-  // enable strict mode for new vm
-  if (store.strict) {
-    enableStrictMode(store);
-  }
-
-  if (oldVm) {
-    if (hot) {
-      // dispatch changes in all subscribed watchers
-      // to force getter re-evaluation for hot reloading.
-      store._withCommit(function () {
-        oldVm._data.$$state = null;
-      });
-    }
-    Vue.nextTick(function () { return oldVm.$destroy(); });
-  }
-}
-
-function installModule (store, rootState, path, module, hot) {
-  var isRoot = !path.length;
-  var namespace = store._modules.getNamespace(path);
-
-  // register in namespace map
-  if (module.namespaced) {
-    store._modulesNamespaceMap[namespace] = module;
-  }
-
-  // set state
-  if (!isRoot && !hot) {
-    var parentState = getNestedState(rootState, path.slice(0, -1));
-    var moduleName = path[path.length - 1];
-    store._withCommit(function () {
-      Vue.set(parentState, moduleName, module.state);
-    });
-  }
-
-  var local = module.context = makeLocalContext(store, namespace, path);
-
-  module.forEachMutation(function (mutation, key) {
-    var namespacedType = namespace + key;
-    registerMutation(store, namespacedType, mutation, local);
-  });
-
-  module.forEachAction(function (action, key) {
-    var type = action.root ? key : namespace + key;
-    var handler = action.handler || action;
-    registerAction(store, type, handler, local);
-  });
-
-  module.forEachGetter(function (getter, key) {
-    var namespacedType = namespace + key;
-    registerGetter(store, namespacedType, getter, local);
-  });
-
-  module.forEachChild(function (child, key) {
-    installModule(store, rootState, path.concat(key), child, hot);
-  });
-}
-
-/**
- * make localized dispatch, commit, getters and state
- * if there is no namespace, just use root ones
- */
-function makeLocalContext (store, namespace, path) {
-  var noNamespace = namespace === '';
-
-  var local = {
-    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if (false) {}
-      }
-
-      return store.dispatch(type, payload)
-    },
-
-    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if (false) {}
-      }
-
-      store.commit(type, payload, options);
-    }
-  };
-
-  // getters and state object must be gotten lazily
-  // because they will be changed by vm update
-  Object.defineProperties(local, {
-    getters: {
-      get: noNamespace
-        ? function () { return store.getters; }
-        : function () { return makeLocalGetters(store, namespace); }
-    },
-    state: {
-      get: function () { return getNestedState(store.state, path); }
-    }
-  });
-
-  return local
-}
-
-function makeLocalGetters (store, namespace) {
-  var gettersProxy = {};
-
-  var splitPos = namespace.length;
-  Object.keys(store.getters).forEach(function (type) {
-    // skip if the target getter is not match this namespace
-    if (type.slice(0, splitPos) !== namespace) { return }
-
-    // extract local getter type
-    var localType = type.slice(splitPos);
-
-    // Add a port to the getters proxy.
-    // Define as getter property because
-    // we do not want to evaluate the getters in this time.
-    Object.defineProperty(gettersProxy, localType, {
-      get: function () { return store.getters[type]; },
-      enumerable: true
-    });
-  });
-
-  return gettersProxy
-}
-
-function registerMutation (store, type, handler, local) {
-  var entry = store._mutations[type] || (store._mutations[type] = []);
-  entry.push(function wrappedMutationHandler (payload) {
-    handler.call(store, local.state, payload);
-  });
-}
-
-function registerAction (store, type, handler, local) {
-  var entry = store._actions[type] || (store._actions[type] = []);
-  entry.push(function wrappedActionHandler (payload, cb) {
-    var res = handler.call(store, {
-      dispatch: local.dispatch,
-      commit: local.commit,
-      getters: local.getters,
-      state: local.state,
-      rootGetters: store.getters,
-      rootState: store.state
-    }, payload, cb);
-    if (!isPromise(res)) {
-      res = Promise.resolve(res);
-    }
-    if (store._devtoolHook) {
-      return res.catch(function (err) {
-        store._devtoolHook.emit('vuex:error', err);
-        throw err
-      })
-    } else {
-      return res
-    }
-  });
-}
-
-function registerGetter (store, type, rawGetter, local) {
-  if (store._wrappedGetters[type]) {
-    if (false) {}
-    return
-  }
-  store._wrappedGetters[type] = function wrappedGetter (store) {
-    return rawGetter(
-      local.state, // local state
-      local.getters, // local getters
-      store.state, // root state
-      store.getters // root getters
-    )
-  };
-}
-
-function enableStrictMode (store) {
-  store._vm.$watch(function () { return this._data.$$state }, function () {
-    if (false) {}
-  }, { deep: true, sync: true });
-}
-
-function getNestedState (state, path) {
-  return path.length
-    ? path.reduce(function (state, key) { return state[key]; }, state)
-    : state
-}
-
-function unifyObjectStyle (type, payload, options) {
-  if (isObject(type) && type.type) {
-    options = payload;
-    payload = type;
-    type = type.type;
-  }
-
-  if (false) {}
-
-  return { type: type, payload: payload, options: options }
-}
-
-function install (_Vue) {
-  if (Vue && _Vue === Vue) {
-    if (false) {}
-    return
-  }
-  Vue = _Vue;
-  applyMixin(Vue);
-}
-
-/**
- * Reduce the code which written in Vue.js for getting the state.
- * @param {String} [namespace] - Module's namespace
- * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
- * @param {Object}
- */
-var mapState = normalizeNamespace(function (namespace, states) {
-  var res = {};
-  normalizeMap(states).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedState () {
-      var state = this.$store.state;
-      var getters = this.$store.getters;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
-        if (!module) {
-          return
-        }
-        state = module.context.state;
-        getters = module.context.getters;
-      }
-      return typeof val === 'function'
-        ? val.call(this, state, getters)
-        : state[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-/**
- * Reduce the code which written in Vue.js for committing the mutation
- * @param {String} [namespace] - Module's namespace
- * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
- * @return {Object}
- */
-var mapMutations = normalizeNamespace(function (namespace, mutations) {
-  var res = {};
-  normalizeMap(mutations).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedMutation () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      // Get the commit method from store
-      var commit = this.$store.commit;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
-        if (!module) {
-          return
-        }
-        commit = module.context.commit;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [commit].concat(args))
-        : commit.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-/**
- * Reduce the code which written in Vue.js for getting the getters
- * @param {String} [namespace] - Module's namespace
- * @param {Object|Array} getters
- * @return {Object}
- */
-var mapGetters = normalizeNamespace(function (namespace, getters) {
-  var res = {};
-  normalizeMap(getters).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    // The namespace has been mutated by normalizeNamespace
-    val = namespace + val;
-    res[key] = function mappedGetter () {
-      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
-        return
-      }
-      if (false) {}
-      return this.$store.getters[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-/**
- * Reduce the code which written in Vue.js for dispatch the action
- * @param {String} [namespace] - Module's namespace
- * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
- * @return {Object}
- */
-var mapActions = normalizeNamespace(function (namespace, actions) {
-  var res = {};
-  normalizeMap(actions).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedAction () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      // get dispatch function from store
-      var dispatch = this.$store.dispatch;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
-        if (!module) {
-          return
-        }
-        dispatch = module.context.dispatch;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [dispatch].concat(args))
-        : dispatch.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-/**
- * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
- * @param {String} namespace
- * @return {Object}
- */
-var createNamespacedHelpers = function (namespace) { return ({
-  mapState: mapState.bind(null, namespace),
-  mapGetters: mapGetters.bind(null, namespace),
-  mapMutations: mapMutations.bind(null, namespace),
-  mapActions: mapActions.bind(null, namespace)
-}); };
-
-/**
- * Normalize the map
- * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
- * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
- * @param {Array|Object} map
- * @return {Object}
- */
-function normalizeMap (map) {
-  return Array.isArray(map)
-    ? map.map(function (key) { return ({ key: key, val: key }); })
-    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
-}
-
-/**
- * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
- * @param {Function} fn
- * @return {Function}
- */
-function normalizeNamespace (fn) {
-  return function (namespace, map) {
-    if (typeof namespace !== 'string') {
-      map = namespace;
-      namespace = '';
-    } else if (namespace.charAt(namespace.length - 1) !== '/') {
-      namespace += '/';
-    }
-    return fn(namespace, map)
-  }
-}
-
-/**
- * Search a special module from store by namespace. if module not exist, print error message.
- * @param {Object} store
- * @param {String} helper
- * @param {String} namespace
- * @return {Object}
- */
-function getModuleByNamespace (store, helper, namespace) {
-  var module = store._modulesNamespaceMap[namespace];
-  if (false) {}
-  return module
-}
-
-var index_esm = {
-  Store: Store,
-  install: install,
-  version: '3.1.0',
-  mapState: mapState,
-  mapMutations: mapMutations,
-  mapGetters: mapGetters,
-  mapActions: mapActions,
-  createNamespacedHelpers: createNamespacedHelpers
-};
-
-/* harmony default export */ var vuex_esm = (index_esm);
-
+// EXTERNAL MODULE: ./node_modules/vuex/dist/vuex.esm.js
+var vuex_esm = __webpack_require__("2f62");
 
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var axios = __webpack_require__("bc3a");
@@ -22608,9 +22654,9 @@ var lodash_default = /*#__PURE__*/__webpack_require__.n(lodash);
 
 
 
-external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm, axios_default.a);
+external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm["a" /* default */], axios_default.a);
 var circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg'];
-/* harmony default export */ var store = (new vuex_esm.Store({
+/* harmony default export */ var store = (new vuex_esm["a" /* default */].Store({
   state: {
     adds: [],
     loading: true,
@@ -22623,7 +22669,8 @@ var circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg'];
     countActiveSides: 0,
     sortID: 0,
     sortDirect: 0,
-    searchLine: ''
+    searchLine: '',
+    listIndex: 1
   },
   getters: {
     filters: function filters(state) {
@@ -22777,10 +22824,13 @@ var circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg'];
     },
     updateSearchLine: function updateSearchLine(state, line) {
       state.searchLine = line;
+    },
+    changeListIndex: function changeListIndex(state, index) {
+      state.listIndex += index;
     }
   }
 }));
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Bubble.vue?vue&type=template&id=62cb0110&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Bubble.vue?vue&type=template&id=62cb0110&scoped=true&
 var Bubblevue_type_template_id_62cb0110_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"custom-classes-transition","enter-active-class":"animated fadeIn fast","leave-active-class":"animated fadeOut"}},[(_vm.bubbleVisibility)?_c('div',{staticClass:"bubble"},[_c('div',{staticClass:"bubble__cros",on:{"click":function($event){return _vm.changeBubbleShow(false)}}}),_c('div',{staticClass:"bubble__city"},[_vm._v(_vm._s(_vm.info.city))]),_c('div',{staticClass:"bubble__street"},[_vm._v(_vm._s(_vm.info.street))]),_c('div',{staticClass:"bubble__box"},[_c('span',{staticClass:"bubble__code"},[_vm._v(_vm._s(_vm.info.code))]),_c('span',{staticClass:"bubble__size"},[_vm._v(_vm._s(_vm.info.size))])]),_c('div',{staticClass:"bubble__picture",on:{"click":function($event){return _vm.changeDetailsShow()}}},[_c('transition',{attrs:{"name":"fadeimg"}},[_c('img',{key:_vm.imgSrc,staticClass:"bubble__img",attrs:{"src":_vm.imgSrc,"alt":""}})])],1),_c('div',{staticClass:"bubble__sides"},[_vm._l((_vm.info.sides),function(side,index){return _c('div',{key:index,class:['btn', 'btn--sides', index === _vm.bubbleActiveSide ? 'btn--active' : '' ],on:{"click":function($event){return _vm.changeSide(index)}}},[(side.status)?_c('span',{staticClass:"btn--selected"}):_vm._e(),_vm._v(_vm._s(side.name)+"\n            ")])}),_c('div',{staticClass:"btn btn--choice btn--more",on:{"click":function($event){return _vm.changeDetailsShow()}}},[_vm._v("Подробнее")]),(!_vm._.isEmpty(_vm.info) && !_vm.info.sides[_vm.bubbleActiveSide].status)?_c('div',{staticClass:"btn btn--choice",on:{"click":function($event){return _vm.changeSideStatus(_vm.bubbleActiveSide)}}},[_c('span',{staticClass:"bubble__plus"}),_vm._v("Добавить\n            ")]):_c('div',{staticClass:"btn btn--choice btn--alert",on:{"click":function($event){return _vm.changeSideStatus(_vm.bubbleActiveSide)}}},[_c('span',{staticClass:"bubble__minus"}),_c('span',{staticClass:"bubble__text-alert"},[_vm._v("Убрать")])])],2)]):_vm._e()])}
 var Bubblevue_type_template_id_62cb0110_scoped_true_staticRenderFns = []
 
@@ -22833,14 +22883,14 @@ var Bubblevue_type_template_id_62cb0110_scoped_true_staticRenderFns = []
 
 /* harmony default export */ var Bubblevue_type_script_lang_js_ = ({
   name: 'baloon',
-  methods: _objectSpread({}, mapMutations(['changeBubbleShow', 'changeSideStatus', 'changeDetailsShow', 'changeBubbleActiveSide']), {
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['changeBubbleShow', 'changeSideStatus', 'changeDetailsShow', 'changeBubbleActiveSide']), {
     changeSide: function changeSide(index) {
       if (index !== this.bubbleActiveSide) {
         this.changeBubbleActiveSide(index);
       }
     }
   }),
-  computed: _objectSpread({}, mapState(['adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide']), {
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide']), {
     info: function info() {
       return this.bubbleID > 0 ? lodash_default.a.find(this.adds, {
         'id': this.bubbleID
@@ -23014,7 +23064,7 @@ var component = normalizeComponent(
       placemarks: []
     };
   },
-  methods: _objectSpread({}, mapMutations(['changeLoadingState', 'changeCheck', 'changeBubbleShow']), {
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['changeLoadingState', 'changeCheck', 'changeBubbleShow']), {
     initHandler: function initHandler() {
       var _this = this;
 
@@ -23047,7 +23097,7 @@ var component = normalizeComponent(
       this.changeLoadingState(false);
     }
   }),
-  computed: _objectSpread({}, mapState(['coords', 'adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide'])),
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['coords', 'adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide'])),
   mounted: function mounted() {
     var _this2 = this;
 
@@ -23100,21 +23150,21 @@ var MapBox_component = normalizeComponent(
 )
 
 /* harmony default export */ var MapBox = (MapBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListBox.vue?vue&type=template&id=7c007c43&scoped=true&
-var ListBoxvue_type_template_id_7c007c43_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"list-box"}},[_c('ListAddress')],1)}
-var ListBoxvue_type_template_id_7c007c43_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListBox.vue?vue&type=template&id=237919ae&scoped=true&
+var ListBoxvue_type_template_id_237919ae_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"list-box"}},[_c(_vm.ListAddress,{tag:"component"})],1)}
+var ListBoxvue_type_template_id_237919ae_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ListBox.vue?vue&type=template&id=7c007c43&scoped=true&
+// CONCATENATED MODULE: ./src/components/ListBox.vue?vue&type=template&id=237919ae&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListAddress/ListAddress.vue?vue&type=template&id=901864d2&scoped=true&
-var ListAddressvue_type_template_id_901864d2_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"list-adds"},[_c('div',{staticClass:"list-adds__box"},[_c('div',{staticClass:"list-adds__title"},[_vm._v("Адресная программа")]),_c('SearchBox'),_c('div',{staticClass:"list-adds__wrap"},[_c('div',{staticClass:"list-adds__header"},[_c('div',{staticClass:"list-adds__col list-adds__col--1"},[_c('HeadList',{attrs:{"id":"1","title":""}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--2"},[_c('HeadList',{attrs:{"id":"2","title":"Город"}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--3"},[_c('HeadList',{attrs:{"id":"3","title":"Адрес, направление"}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--4"},[_c('HeadList',{attrs:{"id":"4","title":"Сторона"}})],1)]),_c('div',{staticClass:"list-adds__body"},_vm._l((_vm.filters),function(item){return _c('div',{key:item.id,staticClass:"list-adds__item",on:{"click":function($event){return _vm.changeCheck(item.id)}}},[_c('div',{staticClass:"list-adds__column list-adds__col--1"},[_c('div',{class:[item.check ? 'list-adds--circle-solid': 'list-adds--circle' , 'list-adds--center']})]),_c('div',{class:[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']},[_vm._v("\n                        "+_vm._s(item.city)+"\n                    ")]),_c('div',{staticClass:"list-adds__column list-adds__col--3"},[_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--headline', 'list-adds__col--text']},[_vm._v("\n                            "+_vm._s(item.street)+"\n                        ")]),_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--desc']},[_vm._v("\n                            "+_vm._s(item.code)+" "+_vm._s(item.size)+"\n                        ")])]),_c('div',{staticClass:"list-adds__column list-adds__col--4"},[_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--center']},[_vm._v("\n                            "+_vm._s(item.blocks)+"\n                        ")])])])}),0),_c('transition',{attrs:{"name":"custom-transit","enter-active-class":"animated fadeIn fast","leave-active-class":"animated fadeOut"}},[(_vm.countActiveSides > 0)?_c('FooterAddress'):_vm._e()],1)],1)],1)])}
-var ListAddressvue_type_template_id_901864d2_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListAddress/ListAddress.vue?vue&type=template&id=38c4028a&scoped=true&
+var ListAddressvue_type_template_id_38c4028a_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"list-adds"},[_c('div',{staticClass:"list-adds__box"},[_c('div',{staticClass:"list-adds__title"},[_vm._v("Адресная программа")]),_c('SearchBox'),_c('div',{staticClass:"list-adds__wrap"},[_c('div',{staticClass:"list-adds__header"},[_c('div',{staticClass:"list-adds__col list-adds__col--1"},[_c('HeadList',{attrs:{"id":"1","title":""}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--2"},[_c('HeadList',{attrs:{"id":"2","title":"Город"}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--3"},[_c('HeadList',{attrs:{"id":"3","title":"Адрес, направление"}})],1),_c('div',{staticClass:"list-adds__col list-adds__col--4"},[_c('HeadList',{attrs:{"id":"4","title":"Сторона"}})],1)]),_c('div',{staticClass:"list-adds__body"},_vm._l((_vm.filters),function(item){return _c('div',{key:item.id,staticClass:"list-adds__item",on:{"click":function($event){return _vm.changeCheck(item.id)}}},[_c('div',{staticClass:"list-adds__column list-adds__col--1"},[_c('div',{class:[item.check ? 'list-adds--circle-solid': 'list-adds--circle' , 'list-adds--center']})]),_c('div',{class:[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']},[_vm._v("\n                        "+_vm._s(item.city)+"\n                    ")]),_c('div',{staticClass:"list-adds__column list-adds__col--3"},[_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--headline', 'list-adds__col--text']},[_vm._v("\n                            "+_vm._s(item.street)+"\n                        ")]),_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--desc']},[_vm._v("\n                            "+_vm._s(item.code)+" "+_vm._s(item.size)+"\n                        ")])]),_c('div',{staticClass:"list-adds__column list-adds__col--4"},[_c('div',{class:[item.check ? 'list-addr--check' : '','list-adds--center']},[_vm._v("\n                            "+_vm._s(item.blocks)+"\n                        ")])])])}),0),_c('transition',{attrs:{"name":"custom-transit","enter-active-class":"animated fadeIn fast","leave-active-class":"animated fadeOut"}},[(_vm.countActiveSides > 0)?_c('FooterAddress'):_vm._e()],1)],1)],1)])}
+var ListAddressvue_type_template_id_38c4028a_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ListAddress/ListAddress.vue?vue&type=template&id=901864d2&scoped=true&
+// CONCATENATED MODULE: ./src/components/ListAddress/ListAddress.vue?vue&type=template&id=38c4028a&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/FooterAddress.vue?vue&type=template&id=cf651b1e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/FooterAddress.vue?vue&type=template&id=cf651b1e&
 var FooterAddressvue_type_template_id_cf651b1e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"footer-adds"},[_c('div',{staticClass:"footer-adds--sides"},[_vm._v("Выбрано сторон"),_c('br'),_c('span',{staticClass:"footer-adds--count"},[_vm._v(_vm._s(_vm.countActiveSides))])]),_c('button',{staticClass:"btn"},[_vm._v("Далее")])])}
 var FooterAddressvue_type_template_id_cf651b1e_staticRenderFns = []
 
@@ -23133,7 +23183,7 @@ var FooterAddressvue_type_template_id_cf651b1e_staticRenderFns = []
 
 /* harmony default export */ var FooterAddressvue_type_script_lang_js_ = ({
   name: 'FooterAddress',
-  computed: _objectSpread({}, mapState(['countActiveSides']))
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['countActiveSides']))
 });
 // CONCATENATED MODULE: ./src/components/FooterAddress.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_FooterAddressvue_type_script_lang_js_ = (FooterAddressvue_type_script_lang_js_); 
@@ -23161,7 +23211,7 @@ var FooterAddress_component = normalizeComponent(
 )
 
 /* harmony default export */ var FooterAddress = (FooterAddress_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/HeadList.vue?vue&type=template&id=29d825d4&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/HeadList.vue?vue&type=template&id=29d825d4&scoped=true&
 var HeadListvue_type_template_id_29d825d4_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{class:['head', _vm.getEmptyClass, _vm.getSelectedClass],on:{"click":function($event){return _vm.changeHeaderState(_vm.id)}}},[_vm._v("\n    "+_vm._s(_vm.title)),_c('span',{class:['head--chevron',_vm.getActiveClass,_vm.getChevronUpClass]})])}
 var HeadListvue_type_template_id_29d825d4_scoped_true_staticRenderFns = []
 
@@ -23180,7 +23230,7 @@ var HeadListvue_type_template_id_29d825d4_scoped_true_staticRenderFns = []
 /* harmony default export */ var HeadListvue_type_script_lang_js_ = ({
   name: 'HeadList',
   props: ['id', 'title'],
-  computed: _objectSpread({}, mapState(['sortID', 'sortDirect']), {
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['sortID', 'sortDirect']), {
     getEmptyClass: function getEmptyClass() {
       return this.title === '' ? 'head--empty' : '';
     },
@@ -23194,7 +23244,7 @@ var HeadListvue_type_template_id_29d825d4_scoped_true_staticRenderFns = []
       return +this.sortDirect === 2 && +this.sortID === +this.id ? 'head--chevron__up' : '';
     }
   }),
-  methods: _objectSpread({}, mapMutations(['changeHeaderState']))
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['changeHeaderState']))
 });
 // CONCATENATED MODULE: ./src/components/HeadList.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_HeadListvue_type_script_lang_js_ = (HeadListvue_type_script_lang_js_); 
@@ -23222,7 +23272,7 @@ var HeadList_component = normalizeComponent(
 )
 
 /* harmony default export */ var HeadList = (HeadList_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchBox.vue?vue&type=template&id=45c231c2&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SearchBox.vue?vue&type=template&id=45c231c2&scoped=true&
 var SearchBoxvue_type_template_id_45c231c2_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:['search', { 'search--small': _vm.isSmall }]},[_c('span',{staticClass:"search__icon",on:{"click":function($event){return _vm.changeSmallActive()}}}),_c('input',{staticClass:"search__input",attrs:{"type":"text"},domProps:{"value":_vm.searchLine},on:{"input":_vm.updateMessage}}),_c('div',{staticClass:"search__close",on:{"click":function($event){return _vm.changeSmall()}}})])}
 var SearchBoxvue_type_template_id_45c231c2_scoped_true_staticRenderFns = []
 
@@ -23248,8 +23298,8 @@ var SearchBoxvue_type_template_id_45c231c2_scoped_true_staticRenderFns = []
       isSmall: true
     };
   },
-  computed: _objectSpread({}, mapState(['searchLine'])),
-  methods: _objectSpread({}, mapMutations(['updateSearchLine']), {
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['searchLine'])),
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['updateSearchLine']), {
     changeSmall: function changeSmall() {
       this.isSmall = !this.isSmall;
       this.updateSearchLine('');
@@ -23360,13 +23410,13 @@ var SearchBox_component = normalizeComponent(
     HeadList: HeadList,
     SearchBox: SearchBox
   },
-  computed: _objectSpread({}, mapGetters(['filters']), mapState(['countActiveSides'])),
-  methods: _objectSpread({}, mapMutations(['changeCheck']))
+  computed: _objectSpread({}, Object(vuex_esm["b" /* mapGetters */])(['filters']), Object(vuex_esm["d" /* mapState */])(['countActiveSides'])),
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['changeCheck']))
 });
 // CONCATENATED MODULE: ./src/components/ListAddress/ListAddress.vue?vue&type=script&lang=js&
  /* harmony default export */ var ListAddress_ListAddressvue_type_script_lang_js_ = (ListAddressvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/ListAddress/ListAddress.scss?vue&type=style&index=0&id=901864d2&lang=scss&scoped=true&
-var ListAddressvue_type_style_index_0_id_901864d2_lang_scss_scoped_true_ = __webpack_require__("b803");
+// EXTERNAL MODULE: ./src/components/ListAddress/ListAddress.scss?vue&type=style&index=0&id=38c4028a&lang=scss&scoped=true&
+var ListAddressvue_type_style_index_0_id_38c4028a_lang_scss_scoped_true_ = __webpack_require__("d302");
 
 // CONCATENATED MODULE: ./src/components/ListAddress/ListAddress.vue
 
@@ -23379,17 +23429,61 @@ var ListAddressvue_type_style_index_0_id_901864d2_lang_scss_scoped_true_ = __web
 
 var ListAddress_component = normalizeComponent(
   ListAddress_ListAddressvue_type_script_lang_js_,
-  ListAddressvue_type_template_id_901864d2_scoped_true_render,
-  ListAddressvue_type_template_id_901864d2_scoped_true_staticRenderFns,
+  ListAddressvue_type_template_id_38c4028a_scoped_true_render,
+  ListAddressvue_type_template_id_38c4028a_scoped_true_staticRenderFns,
   false,
   null,
-  "901864d2",
+  "38c4028a",
   null
   
 )
 
 /* harmony default export */ var ListAddress = (ListAddress_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListSelected.vue?vue&type=template&id=350147ec&scoped=true&
+var ListSelectedvue_type_template_id_350147ec_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+var ListSelectedvue_type_template_id_350147ec_scoped_true_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"list-sel"},[_c('h1',[_vm._v("Hi!!")])])}]
+
+
+// CONCATENATED MODULE: ./src/components/ListSelected.vue?vue&type=template&id=350147ec&scoped=true&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListSelected.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var ListSelectedvue_type_script_lang_js_ = ({
+  name: 'ListSelected'
+});
+// CONCATENATED MODULE: ./src/components/ListSelected.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ListSelectedvue_type_script_lang_js_ = (ListSelectedvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./src/components/ListSelected.vue?vue&type=style&index=0&id=350147ec&lang=scss&scoped=true&
+var ListSelectedvue_type_style_index_0_id_350147ec_lang_scss_scoped_true_ = __webpack_require__("e69b");
+
+// CONCATENATED MODULE: ./src/components/ListSelected.vue
+
+
+
+
+
+
+/* normalize component */
+
+var ListSelected_component = normalizeComponent(
+  components_ListSelectedvue_type_script_lang_js_,
+  ListSelectedvue_type_template_id_350147ec_scoped_true_render,
+  ListSelectedvue_type_template_id_350147ec_scoped_true_staticRenderFns,
+  false,
+  null,
+  "350147ec",
+  null
+  
+)
+
+/* harmony default export */ var ListSelected = (ListSelected_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ListBox.vue?vue&type=script&lang=js&
+
 //
 //
 //
@@ -23397,16 +23491,25 @@ var ListAddress_component = normalizeComponent(
 //
 //
 
+
+
+var list = ['ListAddress', 'ListSelected'];
 /* harmony default export */ var ListBoxvue_type_script_lang_js_ = ({
   name: 'ListBox',
   components: {
-    ListAddress: ListAddress
-  }
+    ListAddress: ListAddress,
+    ListSelected: ListSelected
+  },
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['listIndex']), {
+    curList: function curList() {
+      return list[this.listIndex];
+    }
+  })
 });
 // CONCATENATED MODULE: ./src/components/ListBox.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_ListBoxvue_type_script_lang_js_ = (ListBoxvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/ListBox.vue?vue&type=style&index=0&id=7c007c43&scoped=true&lang=scss&
-var ListBoxvue_type_style_index_0_id_7c007c43_scoped_true_lang_scss_ = __webpack_require__("c4c9");
+// EXTERNAL MODULE: ./src/components/ListBox.vue?vue&type=style&index=0&id=237919ae&scoped=true&lang=scss&
+var ListBoxvue_type_style_index_0_id_237919ae_scoped_true_lang_scss_ = __webpack_require__("f996");
 
 // CONCATENATED MODULE: ./src/components/ListBox.vue
 
@@ -23419,17 +23522,17 @@ var ListBoxvue_type_style_index_0_id_7c007c43_scoped_true_lang_scss_ = __webpack
 
 var ListBox_component = normalizeComponent(
   components_ListBoxvue_type_script_lang_js_,
-  ListBoxvue_type_template_id_7c007c43_scoped_true_render,
-  ListBoxvue_type_template_id_7c007c43_scoped_true_staticRenderFns,
+  ListBoxvue_type_template_id_237919ae_scoped_true_render,
+  ListBoxvue_type_template_id_237919ae_scoped_true_staticRenderFns,
   false,
   null,
-  "7c007c43",
+  "237919ae",
   null
   
 )
 
 /* harmony default export */ var ListBox = (ListBox_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Preloader.vue?vue&type=template&id=ef47f8fc&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Preloader.vue?vue&type=template&id=ef47f8fc&scoped=true&
 var Preloadervue_type_template_id_ef47f8fc_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.loading)?_c('div',{staticClass:"preloader"},[_c('div',{staticClass:"page-loader-circle"}),_c('div',{staticClass:"page-loader-text"},[_vm._v("Пожалуйста, подождите...")])]):_vm._e()}
 var Preloadervue_type_template_id_ef47f8fc_scoped_true_staticRenderFns = []
 
@@ -23448,7 +23551,7 @@ var Preloadervue_type_template_id_ef47f8fc_scoped_true_staticRenderFns = []
 
 /* harmony default export */ var Preloadervue_type_script_lang_js_ = ({
   name: 'preloader',
-  computed: _objectSpread({}, mapState(['loading']))
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['loading']))
 });
 // CONCATENATED MODULE: ./src/components/Preloader.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Preloadervue_type_script_lang_js_ = (Preloadervue_type_script_lang_js_); 
@@ -23476,7 +23579,7 @@ var Preloader_component = normalizeComponent(
 )
 
 /* harmony default export */ var Preloader = (Preloader_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"08ba83de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SideDetails.vue?vue&type=template&id=f8f3d02a&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e2b84a42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SideDetails.vue?vue&type=template&id=f8f3d02a&scoped=true&
 var SideDetailsvue_type_template_id_f8f3d02a_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"custom-transition","enter-active-class":"animated fadeIn fast","leave-active-class":"animated fadeOut"}},[(_vm.detailsVisibility)?_c('div',{staticClass:"details"},[_c('div',{staticClass:"details__holder"},[_c('div',{staticClass:"details__cros",on:{"click":function($event){return _vm.changeDetailsShow()}}}),_c('div',{staticClass:"details__city"},[_vm._v(_vm._s(_vm.info.city))]),_c('div',{staticClass:"details__street"},[_vm._v(_vm._s(_vm.info.street))]),_c('div',{staticClass:"details__box"},[_c('span',{staticClass:"details__code"},[_vm._v(_vm._s(_vm.info.code))]),_c('span',{staticClass:"details__size"},[_vm._v(_vm._s(_vm.info.size))]),_c('span',{staticClass:"details__desc"},[_vm._v("Сторона:")]),_c('span',{staticClass:"details__side"},[_vm._v(_vm._s(_vm.curSide.name))]),_c('span',{staticClass:"details__desc"},[_vm._v("Освещение:")]),_c('span',{staticClass:"details__light"},[_vm._v(_vm._s(_vm.curSide.lighting? 'Есть': 'Нет'))])]),_c('div',{staticClass:"details__picture"},[_c('img',{staticClass:"details__img",attrs:{"src":_vm.curSide.img_full,"alt":""}})])])]):_vm._e()])}
 var SideDetailsvue_type_template_id_f8f3d02a_scoped_true_staticRenderFns = []
 
@@ -23515,8 +23618,8 @@ var SideDetailsvue_type_template_id_f8f3d02a_scoped_true_staticRenderFns = []
 
 /* harmony default export */ var SideDetailsvue_type_script_lang_js_ = ({
   name: 'SideDetails',
-  methods: _objectSpread({}, mapMutations(['changeDetailsShow'])),
-  computed: _objectSpread({}, mapState(['adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide', 'detailsVisibility']), {
+  methods: _objectSpread({}, Object(vuex_esm["c" /* mapMutations */])(['changeDetailsShow'])),
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['adds', 'bubbleID', 'bubbleVisibility', 'bubbleActiveSide', 'detailsVisibility']), {
     info: function info() {
       return this.bubbleID > 0 ? lodash_default.a.find(this.adds, {
         'id': this.bubbleID
@@ -23582,7 +23685,7 @@ var SideDetails_component = normalizeComponent(
   mounted: function mounted() {
     this.$store.dispatch('loadData');
   },
-  computed: _objectSpread({}, mapState(['loading']))
+  computed: _objectSpread({}, Object(vuex_esm["d" /* mapState */])(['loading']))
 });
 // CONCATENATED MODULE: ./src/App.vue?vue&type=script&lang=js&
  /* harmony default export */ var src_Appvue_type_script_lang_js_ = (Appvue_type_script_lang_js_); 

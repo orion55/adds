@@ -21,6 +21,7 @@ export default new Vuex.Store({
     sortID: 0,
     sortDirect: 0,
     searchLine: '',
+    listIndex: 1
   },
   getters: {
     filters: state => {
@@ -170,5 +171,8 @@ export default new Vuex.Store({
     updateSearchLine (state, line) {
       state.searchLine = line
     },
+    changeListIndex (state, index) {
+      state.listIndex += index
+    }
   },
 })
