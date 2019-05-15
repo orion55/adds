@@ -1,16 +1,21 @@
 <template>
     <div class="footer-adds">
-        <div class="footer-adds--sides">Выбрано сторон<br><span class="footer-adds--count">{{countActiveSides}}</span></div>
-        <button class="btn">Далее</button>
+        <div class="footer-adds--sides">Выбрано сторон<br><span class="footer-adds--count">{{countActiveSides}}</span>
+        </div>
+        <button class="btn" @click="changeListIndex(1)">Далее</button>
     </div>
 </template>
 
 <script>
-  import { mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
+
   export default {
     name: 'FooterAddress',
     computed: {
       ...mapState(['countActiveSides']),
+    },
+    methods: {
+      ...mapMutations(['changeListIndex']),
     },
   }
 </script>

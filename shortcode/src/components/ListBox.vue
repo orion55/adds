@@ -1,6 +1,10 @@
 <template>
     <div id="list-box">
-        <component :is="ListAddress"></component>
+        <transition name="custom-transit"
+                    enter-active-class="animated fadeIn fast"
+                    leave-active-class="animated fadeOut">
+            <component :is="curList"></component>
+        </transition>
     </div>
 </template>
 
@@ -15,14 +19,14 @@
     name: 'ListBox',
     components: {
       ListAddress,
-      ListSelected
+      ListSelected,
     },
     computed: {
       ...mapState(['listIndex']),
       curList: function () {
         return list[this.listIndex]
-      }
-    }
+      },
+    },
   }
 </script>
 

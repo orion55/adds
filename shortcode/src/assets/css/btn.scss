@@ -126,3 +126,17 @@ button {
   padding: 6px 3px;
 }
 
+.btn__add-more {
+  color: $color-main;
+  border: 1px solid $color-main;
+  background-color: white;
+  cursor: pointer;
+  transition: all .5s ease-out;
+  margin-right: 15px;
+
+  &:hover {
+    background-color: $color-main;
+    color: white;
+    border: 1px solid $color-main;
+  }
+}

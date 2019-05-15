@@ -6,6 +6,7 @@ import _ from 'lodash'
 Vue.use(Vuex, axios)
 
 const circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg']
+const isTest = false
 
 export default new Vuex.Store({
   state: {
@@ -21,7 +22,7 @@ export default new Vuex.Store({
     sortID: 0,
     sortDirect: 0,
     searchLine: '',
-    listIndex: 1
+    listIndex: +isTest,
   },
   getters: {
     filters: state => {
@@ -29,7 +30,7 @@ export default new Vuex.Store({
 
       let fieldsName = ['check', 'city', 'street', 'blocks']
       if (state.sortID > 0) {
-        result = _.sortBy(state.adds, fieldsName[state.sortID - 1])
+        result = _.sortBy(result, fieldsName[state.sortID - 1])
       }
 
       if (state.sortDirect === 2) {
@@ -42,6 +43,21 @@ export default new Vuex.Store({
           return item.city.toLowerCase().indexOf(str) > -1 || item.street.toLowerCase()
             .indexOf(str) > -1
         })
+      }
+      return result
+    },
+    selected: state => {
+      let result = _.filter(state.adds, ['check', !isTest])
+
+      result = _.sortBy(result, ['city', 'street'])
+
+      let fieldsName = ['city', 'street', 'blocks']
+      if (state.sortID > 0) {
+        result = _.sortBy(result, fieldsName[state.sortID - 1])
+      }
+
+      if (state.sortDirect === 2) {
+        result = result.reverse()
       }
       return result
     },
@@ -173,6 +189,6 @@ export default new Vuex.Store({
     },
     changeListIndex (state, index) {
       state.listIndex += index
-    }
+    },
   },
 })
