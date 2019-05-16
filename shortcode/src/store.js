@@ -48,7 +48,8 @@ export default new Vuex.Store({
     },
     selected: state => {
       let result = _.filter(state.adds, ['check', !isTest])
-      // result = _.sampleSize(result, 3)
+      // result = result.reduce((res, current) => [...res, current, current], [])
+      result = _.sampleSize(result, 3)
 
       result = _.sortBy(result, ['city', 'street'])
 

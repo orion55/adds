@@ -16,10 +16,10 @@
                         <HeadList id="3" title="Сторона"></HeadList>
                     </div>
                 </div>
-                <div class="list-adds__body">
+                <div class="list-adds__body list-adds__body--sel">
                     <div class="list-adds__item" v-for="item in selected" :key="item.id">
                         <div class="list-adds__column list-adds__col--1">
-
+                            <div class="list-adds--delete"></div>
                         </div>
                         <div :class="[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']">
                             {{item.city}}
@@ -59,7 +59,7 @@
     name: 'ListSelected',
     components: {
       HeadList,
-      ContactForm
+      ContactForm,
     },
     computed: {
       ...mapGetters(['selected']),
@@ -77,6 +77,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        padding-bottom: 10px;
     }
 
     .list-adds.list--sel {
@@ -92,6 +93,19 @@
 
     .list-adds__wrap.list-adds__wrap--sel {
         min-height: auto;
-        height: auto;
+        max-height: calc(100% - 282px);
+    }
+
+    .list-adds__body.list-adds__body--sel {
+        flex: none;
+        flex-shrink: 1;
+    }
+
+    .list-adds--delete {
+        width: 13px;
+        height: 13px;
+        background: url("../assets/svg/redminus.svg") center no-repeat;
+        margin: 0 auto;
+        cursor: pointer;
     }
 </style>
