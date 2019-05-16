@@ -2,7 +2,7 @@
     <div class="footer-adds">
         <div class="footer-adds--sides">Выбрано сторон<br><span class="footer-adds--count">{{countActiveSides}}</span>
         </div>
-        <button class="btn" @click="changeListIndex(1)">Далее</button>
+        <button class="btn" @click="clickMore">Далее</button>
     </div>
 </template>
 
@@ -15,7 +15,11 @@
       ...mapState(['countActiveSides']),
     },
     methods: {
-      ...mapMutations(['changeListIndex']),
+      ...mapMutations(['changeListIndex', 'changeBubbleShow']),
+      clickMore: function () {
+        this.changeListIndex(1)
+        this.changeBubbleShow(false)
+      }
     },
   }
 </script>
