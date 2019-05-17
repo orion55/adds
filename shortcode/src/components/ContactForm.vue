@@ -7,7 +7,7 @@
             <label class="contact__label">Имя</label>
         </div>
         <div class="contact__group">
-            <input type="text" class="contact__input" required>
+            <input type="text" class="contact__input" required v-mask="'+7 (999) 999 99 99'">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Телефон</label>
@@ -23,6 +23,14 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+
+  const VueInputMask = require('vue-inputmask').default
+  Vue.use(VueInputMask)
+
+  import Vuelidate from 'vuelidate'
+  Vue.use(Vuelidate)
+
   export default {
     name: 'ContactForm',
   }
