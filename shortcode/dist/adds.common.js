@@ -22137,6 +22137,17 @@ module.exports = __webpack_require__("8aae");
 
 /***/ }),
 
+/***/ "a4bf":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_8cc3f16e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("cf33");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_8cc3f16e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_8cc3f16e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_8cc3f16e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "aa82":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23529,6 +23540,13 @@ module.exports.default = axios;
 
 /***/ }),
 
+/***/ "cf33":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "d294":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23884,17 +23902,6 @@ module.exports = function (original) {
 
 /***/ }),
 
-/***/ "e89e":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("f444");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactForm_vue_vue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "eb66":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24205,13 +24212,6 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-
-/***/ }),
-
-/***/ "f444":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -25301,12 +25301,12 @@ var ListSelectedvue_type_template_id_498287d6_scoped_true_staticRenderFns = [fun
 
 // CONCATENATED MODULE: ./src/components/ListSelected.vue?vue&type=template&id=498287d6&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"133e6975-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactForm.vue?vue&type=template&id=2a7bfde7&scoped=true&
-var ContactFormvue_type_template_id_2a7bfde7_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"contact"},[_c('div',{staticClass:"contact__group"},[_c('input',{staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactName},on:{"input":function($event){return _vm.setContact('Name', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Имя")])]),(_vm.submitted && !_vm.$v.contactName.required)?_c('div',{staticClass:"contact__error"},[_vm._v("Поле, обязательное\n        для заполнения\n    ")]):_vm._e(),(_vm.submitted && !_vm.$v.contactName.minLength)?_c('div',{staticClass:"contact__error"},[_vm._v("Имя должно\n        содержать как\n        минимум\n        "+_vm._s(_vm.$v.contactName.$params.minLength.min)+" буквы.\n    ")]):_vm._e(),_c('div',{staticClass:"contact__group"},[_c('input',{directives:[{name:"mask",rawName:"v-mask",value:('+7 (999) 999 99 99'),expression:"'+7 (999) 999 99 99'"}],staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactPhone},on:{"input":function($event){return _vm.setContact('Phone', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Телефон")])]),_c('div',{staticClass:"contact__group contact__group--last"},[_c('input',{staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactEmail},on:{"input":function($event){return _vm.setContact('Email', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Email")])]),_c('button',{staticClass:"btn",on:{"click":_vm.handleSubmit}},[_vm._v("Отправить запрос")])])}
-var ContactFormvue_type_template_id_2a7bfde7_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"133e6975-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactForm.vue?vue&type=template&id=8cc3f16e&scoped=true&
+var ContactFormvue_type_template_id_8cc3f16e_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"contact"},[_c('div',{ref:"contactName",staticClass:"contact__group"},[_c('input',{staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactName},on:{"input":function($event){return _vm.setContact('Name', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Имя")]),(_vm.submitted && !_vm.$v.contactName.required)?_c('div',{staticClass:"contact__error"},[_vm._v("Поле,\n            обязательное\n            для заполнения\n        ")]):_vm._e(),(_vm.submitted && !_vm.$v.contactName.minLength)?_c('div',{staticClass:"contact__error"},[_vm._v("Имя должно\n            содержать как минимум "+_vm._s(_vm.$v.contactName.$params.minLength.min)+" буквы.\n        ")]):_vm._e()]),_c('div',{staticClass:"contact__group"},[_c('input',{directives:[{name:"mask",rawName:"v-mask",value:('+7 (999) 999 99 99'),expression:"'+7 (999) 999 99 99'"}],staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactPhone},on:{"input":function($event){return _vm.setContact('Phone', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Телефон")]),(_vm.submitted && !_vm.$v.contactPhone.required)?_c('div',{staticClass:"contact__error"},[_vm._v("Поле,\n            обязательное\n            для заполнения\n        ")]):_vm._e()]),_c('div',{staticClass:"contact__group contact__group--last"},[_c('input',{staticClass:"contact__input",attrs:{"type":"text","required":""},domProps:{"value":_vm.contactEmail},on:{"input":function($event){return _vm.setContact('Email', $event.target.value)}}}),_c('span',{staticClass:"contact__highlight"}),_c('span',{staticClass:"contact__bar"}),_c('label',{staticClass:"contact__label"},[_vm._v("Email")]),(_vm.submitted && !_vm.$v.contactEmail.required)?_c('div',{staticClass:"contact__error"},[_vm._v("Поле,\n            обязательное\n            для заполнения\n        ")]):_vm._e(),(_vm.submitted && !_vm.$v.contactEmail.email)?_c('div',{staticClass:"contact__error"},[_vm._v("Введите\n            корректный email-адрес\n        ")]):_vm._e()]),_c('button',{staticClass:"btn",on:{"click":_vm.handleSubmit}},[_vm._v("Отправить запрос")])])}
+var ContactFormvue_type_template_id_8cc3f16e_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ContactForm.vue?vue&type=template&id=2a7bfde7&scoped=true&
+// CONCATENATED MODULE: ./src/components/ContactForm.vue?vue&type=template&id=8cc3f16e&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/vuelidate/lib/index.js
 var lib = __webpack_require__("1dce");
@@ -25317,6 +25317,17 @@ var validators = __webpack_require__("b5ae");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactForm.vue?vue&type=script&lang=js&
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -25379,8 +25390,7 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(lib_default.a);
       });
     }, 750),
     handleSubmit: function handleSubmit(e) {
-      this.submitted = true; // stop here if form is invalid
-
+      this.submitted = true;
       this.$v.$touch();
 
       if (this.$v.$invalid) {
@@ -25394,13 +25404,20 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(lib_default.a);
     contactName: {
       required: validators["required"],
       minLength: Object(validators["minLength"])(3)
+    },
+    contactPhone: {
+      required: validators["required"]
+    },
+    contactEmail: {
+      required: validators["required"],
+      email: validators["email"]
     }
   }
 });
 // CONCATENATED MODULE: ./src/components/ContactForm.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_ContactFormvue_type_script_lang_js_ = (ContactFormvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/ContactForm.vue?vue&type=style&index=0&id=2a7bfde7&lang=scss&scoped=true&
-var ContactFormvue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true_ = __webpack_require__("e89e");
+// EXTERNAL MODULE: ./src/components/ContactForm.vue?vue&type=style&index=0&id=8cc3f16e&lang=scss&scoped=true&
+var ContactFormvue_type_style_index_0_id_8cc3f16e_lang_scss_scoped_true_ = __webpack_require__("a4bf");
 
 // CONCATENATED MODULE: ./src/components/ContactForm.vue
 
@@ -25413,11 +25430,11 @@ var ContactFormvue_type_style_index_0_id_2a7bfde7_lang_scss_scoped_true_ = __web
 
 var ContactForm_component = normalizeComponent(
   components_ContactFormvue_type_script_lang_js_,
-  ContactFormvue_type_template_id_2a7bfde7_scoped_true_render,
-  ContactFormvue_type_template_id_2a7bfde7_scoped_true_staticRenderFns,
+  ContactFormvue_type_template_id_8cc3f16e_scoped_true_render,
+  ContactFormvue_type_template_id_8cc3f16e_scoped_true_staticRenderFns,
   false,
   null,
-  "2a7bfde7",
+  "8cc3f16e",
   null
   
 )

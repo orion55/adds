@@ -1,19 +1,18 @@
 <template>
     <div class="contact">
-        <div class="contact__group">
+        <div class="contact__group" ref="contactName">
             <input type="text" class="contact__input" required :value="contactName"
                    @input="setContact('Name', $event.target.value)">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Имя</label>
-        </div>
-        <div class="contact__error" v-if="submitted && !$v.contactName.required">Поле, обязательное
-            для заполнения
-        </div>
-        <div class="contact__error" v-if="submitted && !$v.contactName.minLength">Имя должно
-            содержать как
-            минимум
-            {{$v.contactName.$params.minLength.min}} буквы.
+            <div class="contact__error" v-if="submitted && !$v.contactName.required">Поле,
+                обязательное
+                для заполнения
+            </div>
+            <div class="contact__error" v-if="submitted && !$v.contactName.minLength">Имя должно
+                содержать как минимум {{$v.contactName.$params.minLength.min}} буквы.
+            </div>
         </div>
         <div class="contact__group">
             <input type="text" class="contact__input" required v-mask="'+7 (999) 999 99 99'"
@@ -22,13 +21,25 @@
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Телефон</label>
+            <div class="contact__error" v-if="submitted && !$v.contactPhone.required">Поле,
+                обязательное
+                для заполнения
+            </div>
         </div>
+
         <div class="contact__group contact__group--last">
             <input type="text" class="contact__input" required :value="contactEmail"
                    @input="setContact('Email', $event.target.value)">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Email</label>
+            <div class="contact__error" v-if="submitted && !$v.contactEmail.required">Поле,
+                обязательное
+                для заполнения
+            </div>
+            <div class="contact__error" v-if="submitted && !$v.contactEmail.email">Введите
+                корректный email-адрес
+            </div>
         </div>
         <button class="btn" @click="handleSubmit">Отправить запрос</button>
     </div>
@@ -38,7 +49,7 @@
   import Vue from 'vue'
   import { mapMutations, mapState } from 'vuex'
   import Vuelidate from 'vuelidate'
-  import { minLength, required } from 'vuelidate/lib/validators'
+  import { email, minLength, required } from 'vuelidate/lib/validators'
   import _ from 'lodash'
 
   const VueInputMask = require('vue-inputmask').default
@@ -67,7 +78,6 @@
       handleSubmit (e) {
         this.submitted = true
 
-        // stop here if form is invalid
         this.$v.$touch()
         if (this.$v.$invalid) {
           return
@@ -80,6 +90,13 @@
       contactName: {
         required,
         minLength: minLength(3),
+      },
+      contactPhone: {
+        required,
+      },
+      contactEmail: {
+        required,
+        email,
       },
     },
   }
@@ -98,6 +115,7 @@
         padding: 15px;
         width: 100%;
         margin-top: auto;
+        position: relative;
     }
 
     .contact__group {
@@ -139,7 +157,7 @@
     }
 
     input.contact__input:focus ~ label.contact__label, input.contact__input:valid ~ label.contact__label {
-        top: -5px;
+        top: -6px;
         font-size: 10px;
         color: white;
         left: 0;
@@ -200,5 +218,6 @@
     .contact__error {
         font-size: 10px;
         color: #FFD479;
+        text-align: center;
     }
 </style>
