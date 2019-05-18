@@ -23,6 +23,9 @@ export default new Vuex.Store({
     sortDirect: 0,
     searchLine: '',
     listIndex: +isTest,
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
   },
   getters: {
     filters: state => {
@@ -191,6 +194,9 @@ export default new Vuex.Store({
     },
     changeListIndex (state, index) {
       state.listIndex += index
+    },
+    updateContact (state, obj) {
+      state['contact' + obj.varName] = obj.varValue
     },
   },
 })

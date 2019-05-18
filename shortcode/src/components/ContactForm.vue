@@ -1,38 +1,87 @@
 <template>
     <div class="contact">
         <div class="contact__group">
-            <input type="text" class="contact__input" required>
+            <input type="text" class="contact__input" required :value="contactName"
+                   @input="setContact('Name', $event.target.value)">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Имя</label>
         </div>
+        <div class="contact__error" v-if="submitted && !$v.contactName.required">Поле, обязательное
+            для заполнения
+        </div>
+        <div class="contact__error" v-if="submitted && !$v.contactName.minLength">Имя должно
+            содержать как
+            минимум
+            {{$v.contactName.$params.minLength.min}} буквы.
+        </div>
         <div class="contact__group">
-            <input type="text" class="contact__input" required v-mask="'+7 (999) 999 99 99'">
+            <input type="text" class="contact__input" required v-mask="'+7 (999) 999 99 99'"
+                   :value="contactPhone"
+                   @input="setContact('Phone', $event.target.value)">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Телефон</label>
         </div>
         <div class="contact__group contact__group--last">
-            <input type="text" class="contact__input" required>
+            <input type="text" class="contact__input" required :value="contactEmail"
+                   @input="setContact('Email', $event.target.value)">
             <span class="contact__highlight"></span>
             <span class="contact__bar"></span>
             <label class="contact__label">Email</label>
         </div>
-        <button class="btn">Отправить запрос</button>
+        <button class="btn" @click="handleSubmit">Отправить запрос</button>
     </div>
 </template>
 
 <script>
   import Vue from 'vue'
+  import { mapMutations, mapState } from 'vuex'
+  import Vuelidate from 'vuelidate'
+  import { minLength, required } from 'vuelidate/lib/validators'
+  import _ from 'lodash'
 
   const VueInputMask = require('vue-inputmask').default
   Vue.use(VueInputMask)
 
-  import Vuelidate from 'vuelidate'
   Vue.use(Vuelidate)
 
   export default {
     name: 'ContactForm',
+    data () {
+      return {
+        submitted: false,
+      }
+    },
+    computed: {
+      ...mapState(['contactName', 'contactPhone', 'contactEmail']),
+    },
+    methods: {
+      ...mapMutations(['updateContact']),
+      setContact: _.debounce(function (varName, varValue) {
+        this.updateContact({
+          varName,
+          varValue,
+        })
+      }, 750),
+      handleSubmit (e) {
+        this.submitted = true
+
+        // stop here if form is invalid
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          return
+        }
+
+        alert('SUCCESS!! :-)')
+      },
+    },
+    validations: {
+      contactName: {
+        required,
+        minLength: minLength(3),
+      },
+    },
   }
 </script>
 
@@ -146,5 +195,10 @@
             width: 0;
             background: transparent;
         }
+    }
+
+    .contact__error {
+        font-size: 10px;
+        color: #FFD479;
     }
 </style>
