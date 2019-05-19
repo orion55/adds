@@ -94,6 +94,7 @@
     .list-adds__wrap.list-adds__wrap--sel {
         min-height: auto;
         max-height: calc(100% - 282px);
+        width: 100%;
     }
 
     .list-adds__body.list-adds__body--sel {

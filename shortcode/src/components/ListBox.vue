@@ -1,8 +1,8 @@
 <template>
     <div id="list-box">
         <transition name="custom-transit"
-                    enter-active-class="animated fadeIn fast"
-                    leave-active-class="animated fadeOut">
+                    enter-active-class="animated fadeIn"
+                    leave-active-class="animated fadeOutUp">
             <component :is="curList"></component>
         </transition>
     </div>
