@@ -6,7 +6,7 @@ import _ from 'lodash'
 Vue.use(Vuex, axios)
 
 const circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg']
-const isTest = false
+const isTest = true
 
 export default new Vuex.Store({
   state: {
@@ -50,7 +50,7 @@ export default new Vuex.Store({
       return result
     },
     selected: state => {
-      let result = _.filter(state.adds, ['check', !isTest])
+      let result = _.filter(state.adds, ['check', isTest])
       // result = result.reduce((res, current) => [...res, current, current], [])
       // result = _.sampleSize(result, 3)
 
@@ -73,6 +73,9 @@ export default new Vuex.Store({
         .then((response) => {
           if (response.data.success) {
             commit('initAddress', response.data.data)
+            if (isTest) {
+              commit('demoData')
+            }
           } else {
             console.log(response.data.data)
           }
@@ -107,6 +110,18 @@ export default new Vuex.Store({
       state.coords = [coord.lat, coord.lng]
 
       state.bubbleID = state.adds[0].id
+    },
+    demoData (state) {
+      let result = _.sampleSize(state.adds, 3)
+      result.forEach((item) => {
+        item.check = true
+        let str = ''
+        item.sides.forEach((element) => {
+          element.status = true
+          str += element.name
+        })
+        item.blocks = str
+      })
     },
     changeLoadingState (state, loading) {
       state.loading = loading
@@ -197,6 +212,14 @@ export default new Vuex.Store({
     },
     updateContact (state, obj) {
       state['contact' + obj.varName] = obj.varValue
+    },
+    removeCheck (state, index) {
+      let item = _.find(state.adds, {'id': index})
+      item.check = false
+      item.blocks = ''
+      item.sides.forEach((element) => {
+        element.status = false
+      })
     },
   },
 })

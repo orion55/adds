@@ -17,30 +17,36 @@
                     </div>
                 </div>
                 <div class="list-adds__body list-adds__body--sel">
-                    <div class="list-adds__item" v-for="item in selected" :key="item.id">
-                        <div class="list-adds__column list-adds__col--1">
-                            <div class="list-adds--delete"></div>
-                        </div>
-                        <div :class="[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']">
-                            {{item.city}}
-                        </div>
-                        <div class="list-adds__column list-adds__col--3">
-                            <div :class="[item.check ? 'list-addr--check' : '','list-adds--headline', 'list-adds__col--text']">
-                                {{item.street}}
+                    <transition-group name="list"
+                                      enter-active-class="animated fadeIn fast"
+                                      leave-active-class="animated fadeOut fast">
+                        <div class="list-adds__item" v-for="item in selected" :key="item.id"
+                             @click="changeCheck(item.id)">
+                            <div class="list-adds__column list-adds__col--1">
+                                <div class="list-adds--delete"
+                                     @click.self.stop="removeCheck(item.id)"></div>
                             </div>
-                            <div :class="[item.check ? 'list-addr--check' : '','list-adds--desc']">
-                                {{item.code}} {{item.size}}
+                            <div :class="[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']">
+                                {{item.city}}
+                            </div>
+                            <div class="list-adds__column list-adds__col--3">
+                                <div :class="[item.check ? 'list-addr--check' : '','list-adds--headline', 'list-adds__col--text']">
+                                    {{item.street}}
+                                </div>
+                                <div :class="[item.check ? 'list-addr--check' : '','list-adds--desc']">
+                                    {{item.code}} {{item.size}}
+                                </div>
+                            </div>
+                            <div class="list-adds__column list-adds__col--4">
+                                <div :class="[item.check ? 'list-addr--check' : '','list-adds--center']">
+                                    {{item.blocks}}
+                                </div>
                             </div>
                         </div>
-                        <div class="list-adds__column list-adds__col--4">
-                            <div :class="[item.check ? 'list-addr--check' : '','list-adds--center']">
-                                {{item.blocks}}
-                            </div>
-                        </div>
-                    </div>
+                    </transition-group>
                 </div>
                 <div class="list-adds__add-more">
-                    <button class="btn btn__add-more" @click="changeListIndex(-1)">Добавить
+                    <button class="btn btn__add-more" @click="handelMore">Добавить
                         ещё
                     </button>
                 </div>
@@ -65,7 +71,11 @@
       ...mapGetters(['selected']),
     },
     methods: {
-      ...mapMutations(['changeListIndex']),
+      ...mapMutations(['changeListIndex', 'changeCheck', 'removeCheck', 'calcCountSides']),
+      handelMore () {
+        this.calcCountSides()
+        this.changeListIndex(-1)
+      },
     },
   }
 </script>
@@ -108,5 +118,14 @@
         background: url("../assets/svg/redminus.svg") center no-repeat;
         margin: 0 auto;
         cursor: pointer;
+        transition-duration: .5s;
+        transition-property: transform;
+        transition-timing-function: ease-in-out;
+    }
+
+    .list--sel .list-adds__col--1:hover {
+        .list-adds--delete {
+            transform: rotate(180deg);
+        }
     }
 </style>
