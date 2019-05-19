@@ -24,7 +24,7 @@
                              @click="changeCheck(item.id)">
                             <div class="list-adds__column list-adds__col--1">
                                 <div class="list-adds--delete"
-                                     @click.self.stop="removeCheck(item.id)"></div>
+                                     @click.self.stop="handleRemove(item.id)"></div>
                             </div>
                             <div :class="[item.check ? 'list-addr--check' : '', 'list-adds__column', 'list-adds__col--2', 'list-adds__col--text', 'list-adds__col--space']">
                                 {{item.city}}
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from 'vuex'
+  import { mapGetters, mapMutations, mapState } from 'vuex'
   import HeadList from './HeadList'
   import ContactForm from './ContactForm'
 
@@ -69,9 +69,18 @@
     },
     computed: {
       ...mapGetters(['selected']),
+      ...mapState(['countActiveSides']),
     },
     methods: {
       ...mapMutations(['changeListIndex', 'changeCheck', 'removeCheck', 'calcCountSides']),
+      handleRemove (index) {
+        this.removeCheck(index)
+
+        this.calcCountSides()
+        if (this.countActiveSides === 0) {
+          this.changeListIndex(-1)
+        }
+      },
       handelMore () {
         this.calcCountSides()
         this.changeListIndex(-1)
