@@ -83,3 +83,37 @@ function get_billboards()
 
     wp_die();
 }
+
+add_action('wp_ajax_nopriv_billboards_add', 'billboards_add');
+add_action('wp_ajax_billboards_add', 'billboards_add');
+
+function billboards_add()
+{
+    if (empty($_POST['nonce'])) {
+        wp_die('Nonce bad');
+    }
+
+    $check_ajax_referer = check_ajax_referer('myajax-nonce123', 'nonce', false);
+
+    if (!$check_ajax_referer) {
+        wp_send_json_error('Эх! Сработала защита');
+    }
+
+    $info = [];
+    $info['contactName'] = (isset($_POST['contactName']) ? sanitize_text_field($_POST['contactName']) : '');
+    $info['contactPhone'] = (isset($_POST['contactPhone']) ? sanitize_text_field($_POST['contactPhone']) : '');
+    $info['contactEmail'] = (isset($_POST['contactEmail']) ? sanitize_text_field($_POST['contactEmail']) : '');
+
+    $errorArr = [];
+
+//    contact_send($info);
+
+    if (count($errorArr) > 0) {
+        wp_send_json_error($errorArr);
+    } else {
+//        wp_send_json_success('Заявка успешно зарегистрирована!');
+//        wp_send_json_success($info);
+        wp_send_json_success($_POST);
+    }
+    wp_die();
+}

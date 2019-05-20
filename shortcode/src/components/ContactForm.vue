@@ -47,7 +47,7 @@
 
 <script>
   import Vue from 'vue'
-  import { mapMutations, mapState } from 'vuex'
+  import { mapActions, mapMutations, mapState } from 'vuex'
   import Vuelidate from 'vuelidate'
   import { email, minLength, required } from 'vuelidate/lib/validators'
   import _ from 'lodash'
@@ -69,6 +69,7 @@
     },
     methods: {
       ...mapMutations(['updateContact']),
+      ...mapActions(['sendAction']),
       setContact: _.debounce(function (varName, varValue) {
         this.updateContact({
           varName,
@@ -83,7 +84,13 @@
           return
         }
 
-        alert('SUCCESS!! :-)')
+        this.sendAction()
+          .then((response) => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
       },
     },
     validations: {

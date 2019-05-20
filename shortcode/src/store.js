@@ -51,8 +51,6 @@ export default new Vuex.Store({
     },
     selected: state => {
       let result = _.filter(state.adds, ['check', isTest])
-      // result = result.reduce((res, current) => [...res, current, current], [])
-      // result = _.sampleSize(result, 3)
 
       result = _.sortBy(result, ['city', 'street'])
 
@@ -83,6 +81,26 @@ export default new Vuex.Store({
         .catch((error) => {
           console.log(error)
         })
+    },
+    sendAction ({state, getters}) {
+      let formData = new FormData()
+      formData.append('action', 'billboards_add')
+      formData.append('nonce', wp_data.nonce)
+      formData.append('contactName', state.contactName)
+      formData.append('contactPhone', state.contactPhone)
+      formData.append('contactEmail', state.contactEmail)
+      let billboards = JSON.stringify(getters.selected)
+      formData.append('billboards', billboards)
+
+      return new Promise((resolve, reject) => {
+        axios.post(wp_data.url_ajax, formData)
+          .then((response) => {
+            resolve(response.data)
+          })
+          .catch(function (error) {
+            reject(error)
+          })
+      })
     },
   },
   mutations: {
@@ -122,6 +140,9 @@ export default new Vuex.Store({
         })
         item.blocks = str
       })
+      state.contactName = 'Олег'
+      state.contactEmail = '5555@mail.ru'
+      state.contactPhone = '+7 (111) 111 11 11'
     },
     changeLoadingState (state, loading) {
       state.loading = loading
