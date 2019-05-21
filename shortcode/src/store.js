@@ -89,8 +89,21 @@ export default new Vuex.Store({
       formData.append('contactName', state.contactName)
       formData.append('contactPhone', state.contactPhone)
       formData.append('contactEmail', state.contactEmail)
-      let billboards = JSON.stringify(getters.selected)
-      formData.append('billboards', billboards)
+
+      let i = 0
+      for (let {blocks, city, code, coordinates, id, size, street} of getters.selected) {
+        formData.append('id' + i, id)
+        formData.append('blocks' + i, blocks)
+        formData.append('city' + i, city)
+        formData.append('code' + i, code)
+        formData.append('size' + i, size)
+        formData.append('street' + i, street)
+        formData.append('coordLat' + i, coordinates.lat)
+        formData.append('coordLng' + i, coordinates.lng)
+        i++
+      }
+
+      formData.append('countBillboards', i + '')
 
       return new Promise((resolve, reject) => {
         axios.post(wp_data.url_ajax, formData)

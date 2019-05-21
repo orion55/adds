@@ -89,6 +89,36 @@ add_action('wp_ajax_billboards_add', 'billboards_add');
 
 function billboards_add()
 {
+    function contact_send($info)
+    {
+        $title = 'Новый заказ - ' . $info['contactName'];
+
+        $url = get_site_url();
+        $url = str_replace("http://", '', $url);
+        $url = str_replace("https://", '', $url);
+
+        $headers[] = 'From: ' . $url . ' <mail@' . $url . '>';
+        $headers[] = 'Content-type: text/html; charset=utf-8';
+
+        $email = carbon_get_theme_option('crb_email');
+        if (!empty($email)) {
+            $message = '<html><body>';
+            $message .= '<table rules="all" style="border-color: #666;" cellpadding="10" border="1">';
+            $message .= "<tr style='background: #eee;'><td><strong>Имя:</strong> </td><td>" . $info['contactName'] . "</td></tr>";
+            $message .= "<tr><td><strong>Телефон:</strong> </td><td>" . $info['contactPhone'] . "</td></tr>";
+            $message .= "<tr style='background: #eee;'><td><strong>Email:</strong> </td><td>" . $info['contactEmail'] . "</td></tr>";
+
+            $message .= "</table>";
+            $message .= "</body></html>";
+
+            if (!wp_mail($email, $title, $message, $headers)) {
+                array_push($errorArr, 'Ошибка при отправки письма!');
+            }
+        } else {
+            array_push($errorArr, 'Ошибка при отправки письма! Email отправки не указан!');
+        }
+    }
+
     if (empty($_POST['nonce'])) {
         wp_die('Nonce bad');
     }
@@ -103,17 +133,34 @@ function billboards_add()
     $info['contactName'] = (isset($_POST['contactName']) ? sanitize_text_field($_POST['contactName']) : '');
     $info['contactPhone'] = (isset($_POST['contactPhone']) ? sanitize_text_field($_POST['contactPhone']) : '');
     $info['contactEmail'] = (isset($_POST['contactEmail']) ? sanitize_text_field($_POST['contactEmail']) : '');
+    $info['countBillboards'] = (isset($_POST['countBillboards']) ? intval($_POST['countBillboards']) : 0);
+
+    $billboards = [];
+    for ($i = 0; $i < $info['countBillboards']; $i++) {
+        $board = [];
+        $board['id'] = (isset($_POST['id' . $i]) ? intval($_POST['id' . $i]) : 0);
+        $board['blocks'] = (isset($_POST['blocks' . $i]) ? sanitize_text_field($_POST['blocks' . $i]) : '');
+        $board['city'] = (isset($_POST['city' . $i]) ? sanitize_text_field($_POST['city' . $i]) : '');
+        $board['code'] = (isset($_POST['code' . $i]) ? sanitize_text_field($_POST['code' . $i]) : '');
+        $board['size'] = (isset($_POST['size' . $i]) ? sanitize_text_field($_POST['size' . $i]) : '');
+        $board['street'] = (isset($_POST['street' . $i]) ? sanitize_text_field($_POST['street' . $i]) : '');
+        $board['coordLat'] = (isset($_POST['coordLat' . $i]) ? floatval($_POST['coordLat' . $i]) : 0);
+        $board['coordLng'] = (isset($_POST['coordLng' . $i]) ? floatval($_POST['coordLng' . $i]) : 0);
+
+        array_push($billboards, $board);
+    }
+    $info['billboards'] = $billboards;
 
     $errorArr = [];
 
-//    contact_send($info);
+    contact_send($info);
 
     if (count($errorArr) > 0) {
         wp_send_json_error($errorArr);
     } else {
 //        wp_send_json_success('Заявка успешно зарегистрирована!');
-//        wp_send_json_success($info);
-        wp_send_json_success($_POST);
+        wp_send_json_success($info);
+//        wp_send_json_success($_POST);
     }
     wp_die();
 }
