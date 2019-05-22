@@ -6,7 +6,7 @@ import _ from 'lodash'
 Vue.use(Vuex, axios)
 
 const circleImg = ['circle.svg', 'halfcircle.svg', 'fullcircle.svg']
-const isTest = true
+const isTest = false
 
 export default new Vuex.Store({
   state: {
@@ -50,7 +50,7 @@ export default new Vuex.Store({
       return result
     },
     selected: state => {
-      let result = _.filter(state.adds, ['check', isTest])
+      let result = _.filter(state.adds, ['check', !isTest])
 
       result = _.sortBy(result, ['city', 'street'])
 
@@ -110,7 +110,7 @@ export default new Vuex.Store({
           .then((response) => {
             resolve(response.data)
           })
-          .catch(function (error) {
+          .catch((error) => {
             reject(error)
           })
       })

@@ -51,6 +51,9 @@
   import Vuelidate from 'vuelidate'
   import { email, minLength, required } from 'vuelidate/lib/validators'
   import _ from 'lodash'
+  import VueSweetalert2 from 'vue-sweetalert2'
+
+  Vue.use(VueSweetalert2)
 
   const VueInputMask = require('vue-inputmask').default
   Vue.use(VueInputMask)
@@ -68,7 +71,7 @@
       ...mapState(['contactName', 'contactPhone', 'contactEmail']),
     },
     methods: {
-      ...mapMutations(['updateContact']),
+      ...mapMutations(['updateContact', 'changeListIndex', 'calcCountSides']),
       ...mapActions(['sendAction']),
       setContact: _.debounce(function (varName, varValue) {
         this.updateContact({
@@ -85,11 +88,38 @@
         }
 
         this.sendAction()
-          .then((response) => {
-            console.log(response)
+          .then((answer) => {
+            // console.log(answer)
+            if (answer.success) {
+              Vue.swal({
+                type: 'success',
+                title: 'Спасибо за заявку!',
+                text: answer.data,
+                confirmButtonColor: '#245EF6',
+              })
+              this.calcCountSides()
+              this.changeListIndex(-1)
+            } else {
+              let message = ''
+              answer.data.forEach((element) => {
+                message += element
+              })
+              Vue.swal({
+                type: 'error',
+                title: 'Ошибка',
+                text: message,
+                confirmButtonColor: '#245EF6',
+              })
+            }
+
           })
-          .catch(error => {
-            console.log(error)
+          .catch((error) => {
+            Vue.swal({
+              type: 'error',
+              title: 'Ошибка',
+              text: error.statusText,
+              confirmButtonColor: '#245EF6',
+            })
           })
       },
     },

@@ -89,7 +89,8 @@ add_action('wp_ajax_billboards_add', 'billboards_add');
 
 function billboards_add()
 {
-    function contact_send($info)
+
+    function contact_send($info, &$errorArr)
     {
         $title = 'Новый заказ - ' . $info['contactName'];
 
@@ -101,12 +102,26 @@ function billboards_add()
         $headers[] = 'Content-type: text/html; charset=utf-8';
 
         $email = carbon_get_theme_option('crb_email');
+
         if (!empty($email)) {
             $message = '<html><body>';
             $message .= '<table rules="all" style="border-color: #666;" cellpadding="10" border="1">';
-            $message .= "<tr style='background: #eee;'><td><strong>Имя:</strong> </td><td>" . $info['contactName'] . "</td></tr>";
+            $message .= "<tr style='background: #eee;'><td><strong>Имя:</strong></td><td>" . $info['contactName'] . "</td></tr>";
             $message .= "<tr><td><strong>Телефон:</strong> </td><td>" . $info['contactPhone'] . "</td></tr>";
-            $message .= "<tr style='background: #eee;'><td><strong>Email:</strong> </td><td>" . $info['contactEmail'] . "</td></tr>";
+            $message .= "<tr style='background: #eee;'><td><strong>Email:</strong></td><td>" . $info['contactEmail'] . "</td></tr>";
+
+            $i = 1;
+            foreach ($info['billboards'] as $board) {
+                $message .= "<tr style='background: #bebebe;'><td  colspan='2'><strong>Щит №" . $i . "</strong></td></tr>";
+                $message .= "<tr><td><strong>Город:</strong> </td><td>" . $board['city'] . "</td></tr>";
+                $message .= "<tr style='background: #eee;'><td><strong>Улица:</strong></td><td>" . $board['street'] . "</td></tr>";
+                $message .= "<tr><td><strong>Стороны:</strong> </td><td>" . $board['blocks'] . "</td></tr>";
+                $message .= "<tr style='background: #eee;'><td><strong>Код:</strong></td><td>" . $board['code'] . "</td></tr>";
+                $message .= "<tr><td><strong>Размер:</strong> </td><td>" . $board['size'] . "</td></tr>";
+                $message .= "<tr style='background: #eee;'><td><strong>Широта:</strong></td><td>" . $board['coordLat'] . "</td></tr>";
+                $message .= "<tr><td><strong>Долгота:</strong> </td><td>" . $board['coordLng'] . "</td></tr>";
+                $i++;
+            }
 
             $message .= "</table>";
             $message .= "</body></html>";
@@ -133,10 +148,10 @@ function billboards_add()
     $info['contactName'] = (isset($_POST['contactName']) ? sanitize_text_field($_POST['contactName']) : '');
     $info['contactPhone'] = (isset($_POST['contactPhone']) ? sanitize_text_field($_POST['contactPhone']) : '');
     $info['contactEmail'] = (isset($_POST['contactEmail']) ? sanitize_text_field($_POST['contactEmail']) : '');
-    $info['countBillboards'] = (isset($_POST['countBillboards']) ? intval($_POST['countBillboards']) : 0);
+    $countBillboards = (isset($_POST['countBillboards']) ? intval($_POST['countBillboards']) : 0);
 
     $billboards = [];
-    for ($i = 0; $i < $info['countBillboards']; $i++) {
+    for ($i = 0; $i < $countBillboards; $i++) {
         $board = [];
         $board['id'] = (isset($_POST['id' . $i]) ? intval($_POST['id' . $i]) : 0);
         $board['blocks'] = (isset($_POST['blocks' . $i]) ? sanitize_text_field($_POST['blocks' . $i]) : '');
@@ -153,13 +168,13 @@ function billboards_add()
 
     $errorArr = [];
 
-    contact_send($info);
+    contact_send($info, $errorArr);
 
     if (count($errorArr) > 0) {
         wp_send_json_error($errorArr);
     } else {
-//        wp_send_json_success('Заявка успешно зарегистрирована!');
-        wp_send_json_success($info);
+        wp_send_json_success('Заявка успешно зарегистрирована!');
+//        wp_send_json_success($info);
 //        wp_send_json_success($_POST);
     }
     wp_die();
