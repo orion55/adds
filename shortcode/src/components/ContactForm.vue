@@ -257,4 +257,19 @@
         color: #FFD479;
         text-align: center;
     }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+        input.contact__input {
+            width: 90%;
+        }
+
+        .contact__group {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+
+    }
 </style>
