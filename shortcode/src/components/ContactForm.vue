@@ -79,7 +79,7 @@
           varValue,
         })
       }, 750),
-      handleSubmit (e) {
+      handleSubmit () {
         this.submitted = true
 
         this.$v.$touch()

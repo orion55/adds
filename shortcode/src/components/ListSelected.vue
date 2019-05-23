@@ -137,4 +137,14 @@
             transform: rotate(180deg);
         }
     }
+
+    @media only screen and (min-device-width: 768px) and (max-width: 1199px) {
+
+    }
+
+    @media only screen and (max-width: 767px) {
+        .list-adds__wrap.list-adds__wrap--sel {
+            min-height: auto;
+        }
+    }
 </style>

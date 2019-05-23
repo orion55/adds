@@ -46,8 +46,16 @@
 
     @media only screen and (max-width: 767px) {
         #list-box {
-            height: 400px;
             width: 100%;
+            height: auto;
+
+            & > .list-adds {
+                height: 400px;
+            }
+
+            & > .list-adds.list--sel {
+                height: auto;
+            }
         }
     }
 </style>
