@@ -23,7 +23,7 @@ class Address_Shortcode
     {
         $url = plugin_dir_url(__FILE__);
         wp_register_style('adds-module', plugin_dir_url(__FILE__) . 'dist/adds.css', null, time(), 'all');
-        wp_register_script('vue', plugin_dir_url(__FILE__) . 'js/vue.js', array(), null, true);
+        wp_register_script('vue', plugin_dir_url(__FILE__) . 'js/vue.min.js', array(), null, true);
         wp_register_script('adds-module-lib', plugin_dir_url(__FILE__) . 'dist/adds.umd.min.js', array('vue'), time(), true);
         wp_register_script('main', plugin_dir_url(__FILE__) . 'js/main.js', array('adds-module-lib'), time(), true);
     }
