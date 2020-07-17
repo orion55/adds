@@ -19,7 +19,7 @@
     "axios": "^0.18.0",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.7.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "run-sequence": "^2.2.1",
     "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
