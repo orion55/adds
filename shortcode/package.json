@@ -17,7 +17,7 @@
     "@vue/cli-service": "^3.7.0",
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-shell": "^0.7.0",
     "lodash": "^4.17.11",
     "run-sequence": "^2.2.1",
