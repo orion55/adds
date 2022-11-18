@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-service": "^5.0.8",
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
     "gulp": "^3.9.1",
